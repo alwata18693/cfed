@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiche Projet - CFED Mauritanie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #3498db;
+      --primary-dark: #2980b9;
+      --secondary: #2c3e50;
+      --accent: #e74c3c;
+      --light: #f7f9fc;
+      --dark: #34495e;
+      --success: #2ecc71;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --gray: #ecf0f1;
+      --border: #ddd;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+      color: white;
+      padding: 25px;
+      text-align: center;
+      position: relative;
+    }
+
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .logo-container {
+      width: 90px;
+      height: 90px;
+      margin-bottom: 15px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+    }
+    
+    .logo-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      margin: 5px 0;
+      font-weight: 600;
+    }
+    
+    .header h2 {
+      font-size: 18px;
+      margin: 0;
+      font-weight: 400;
+      opacity: 0.9;
+    }
+    
+    .form-title {
+      background: var(--gray);
+      padding: 15px;
+      text-align: center;
+      color: var(--secondary);
+      font-size: 22px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    form {
+      padding: 25px;
+    }
+    
+    .form-section {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed var(--border);
+    }
+    
+    .form-section:last-child {
+      border-bottom: none;
+    }
+    
+    .section-title {
+      color: var(--primary);
+      font-size: 18px;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+    }
+    
+    .section-title i {
+      margin-right: 10px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 8px;
+      color: var(--secondary);
+    }
+    
+    input[type="text"], input[type="number"], textarea, select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      transition: all 0.3s;
+    }
+    
+    input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    
+    table th {
+      background-color: var(--primary);
+      color: white;
+      font-weight: 500;
+      text-align: left;
+      padding: 12px 15px;
+    }
+    
+    table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    table tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+    
+    table tr:hover {
+      background-color: #e9f7fe;
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn i {
+      margin-right: 8px;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background: #27ae60;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #c0392b;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+    
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    
+    .progress-bar {
+      height: 8px;
+      background: #eee;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: var(--success);
+      border-radius: 4px;
+      transition: width 0.5s;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .empty-row {
+      text-align: center;
+      color: #999;
+      font-style: italic;
+      padding: 20px;
+    }
+
+    .pdf-only {
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      
+      .container {
+        border-radius: 8px;
+      }
+      
+      .header {
+        padding: 20px 15px;
+      }
+      
+      .header h1 {
+        font-size: 20px;
+      }
+      
+      .header h2 {
+        font-size: 16px;
+      }
+      
+      form {
+        padding: 15px;
+      }
+      
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+      
+      .form-actions {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background: var(--success);
+      color: white;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+    
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .toast.error {
+      background: var(--danger);
+    }
+
+    #pdf-container {
+      position: absolute;
+      left: -9999px;
+      top: -9999px;
+      width: 1000px;
+      padding: 20px;
+    }
+
+    .pdf-page {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      overflow: hidden;
+      margin-bottom: 20px;
+      page-break-after: always;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="form-container">
+    <!-- Header avec logo et titres -->
+    <div class="header">
+      <div class="header-content">
+        <div class="logo-container">
+          <img src="cfed.jpg" alt="Logo CFED Mauritanie">
+        </div>
+        <h1>Centre de Formation et d'Échanges à Distance de Mauritanie</h1>
+        <h2>مركز التكوين والتبادل عن بعد</h2>
+      </div>
+    </div>
+
+    <div class="form-title">
+      FICHE PROJET
+    </div>
+
+    <form id="ficheProjet">
+      <div class="form-section">
+        <div class="form-group">
+          <label for="projet">Projet :</label>
+          <input type="text" id="projet" name="projet" required>
+        </div>
+
+        <div class="form-group">
+          <label for="objectif">Objectif :</label>
+          <textarea id="objectif" name="objectif" rows="3" required></textarea>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title"><i class="fas fa-tasks"></i> État d'avancement global</h3>
+        
+        <table id="table-activites">
+          <thead>
+            <tr>
+              <th width="30%">Composante / Activité principale</th>
+              <th width="15%">Statut</th>
+              <th width="15%">État d'avancement (%)</th>
+              <th width="30%">Commentaires</th>
+              <th width="10%">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" name="activite[]" class="activite-input" value="Développement de la plateforme e-learning" required></td>
+              <td>
+                <select name="statut[]" class="statut-select" required>
+                  <option value="">Sélectionner</option>
+                  <option selected>En cours</option>
+                  <option>Non commencé</option>
+                  <option>Terminé</option>
+                </select>
+              </td>
+              <td>
+                <input type="number" name="avancement[]" class="avancement-input" min="0" max="100" value="65" required oninput="updateProgressBar(this)">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 65%"></div>
+                </div>
+              </td>
+              <td><input type="text" name="comment[]" class="comment-input" value="Intégration des modules en cours"></td>
+              <td class="action-buttons">
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <button type="button" class="btn btn-primary" onclick="addActivityRow()">
+          <i class="fas fa-plus"></i> Ajouter une activité
+        </button>
+      </div>
+
+      <div class="form-section">
+        <div class="form-group">
+          <label for="prochaine">Prochaine étape clé :</label>
+          <textarea id="prochaine" name="prochaine" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title"><i class="fas fa-exclamation-triangle"></i> Risques ou blocages identifiés</h3>
+        
+        <table id="table-risques">
+          <thead>
+            <tr>
+              <th width="30%">Description du risque / blocage</th>
+              <th width="20%">Niveau d'impact</th>
+              <th width="40%">Mesures envisagées</th>
+              <th width="10%">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" name="risque[]" class="risque-input" value="Retard dans la livraison des contenus pédagogiques"></td>
+              <td>
+                <select name="impact[]" class="impact-select">
+                  <option value="">Sélectionner</option>
+                  <option>Mineur</option>
+                  <option selected>Majeur</option>
+                  <option>Critique</option>
+                </select>
+              </td>
+              <td><input type="text" name="mesure[]" class="mesure-input" value="Établir un calendrier contraignant avec les formateurs"></td>
+              <td class="action-buttons">
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <button type="button" class="btn btn-primary" onclick="addRiskRow()">
+          <i class="fas fa-plus"></i> Ajouter un risque
+        </button>
+      </div>
+
+      <div class="form-section">
+        <div class="form-group">
+          <label for="commentaires">Commentaires / Recommandations :</label>
+          <textarea id="commentaires" name="commentaires" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-primary" onclick="sauvegarder()">
+          <i class="fas fa-save"></i> Sauvegarder
+        </button>
+        <button type="button" class="btn btn-success" onclick="exporterPDF()">
+          <i class="fas fa-file-pdf"></i> Exporter en PDF
+        </button>
+        <button type="button" class="btn btn-danger" onclick="effacerFormulaire()">
+          <i class="fas fa-trash"></i> Effacer tout
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div id="pdf-container"></div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Import jsPDF et html2canvas depuis CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script>
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', function() {
+      chargerDonnees();
+      // Mettre à jour les barres de progression initiales
+      document.querySelectorAll('.avancement-input').forEach(input => {
+        updateProgressBar(input);
+      });
+      
+      // Ajouter des écouteurs d'événements pour la sauvegarde automatique
+      document.querySelectorAll('input, textarea, select').forEach(element => {
+        element.addEventListener('change', sauvegarderDonnees);
+      });
+    });
+
+    // Fonction pour afficher les notifications
+    function afficherNotification(message, isError = false) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'toast' + (isError ? ' error' : '');
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+    
+    // Mettre à jour la barre de progression
+    function updateProgressBar(input) {
+      const progressFill = input.parentElement.querySelector('.progress-fill');
+      progressFill.style.width = input.value + '%';
+      
+      // Changer la couleur en fonction du pourcentage
+      if (input.value < 30) {
+        progressFill.style.background = '#e74c3c';
+      } else if (input.value < 70) {
+        progressFill.style.background = '#f39c12';
+      } else {
+        progressFill.style.background = '#2ecc71';
+      }
+    }
+    
+    // Ajouter une ligne d'activité
+    function addActivityRow() {
+      const tbody = document.querySelector('#table-activites tbody');
+      const newRow = document.createElement('tr');
+      
+      newRow.innerHTML = `
+        <td><input type="text" name="activite[]" class="activite-input" required></td>
+        <td>
+          <select name="statut[]" class="statut-select" required>
+            <option value="">Sélectionner</option>
+            <option>Non commencé</option>
+            <option>En cours</option>
+            <option>Terminé</option>
+          </select>
+        </td>
+        <td>
+          <input type="number" name="avancement[]" class="avancement-input" min="0" max="100" required oninput="updateProgressBar(this)">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </td>
+        <td><input type="text" name="comment[]" class="comment-input"></td>
+        <td class="action-buttons">
+          <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
+        </td>
+      `;
+      
+      tbody.appendChild(newRow);
+      
+      // Ajouter un écouteur d'événement pour la sauvegarde automatique
+      newRow.querySelectorAll('input, select').forEach(element => {
+        element.addEventListener('change', sauvegarderDonnees);
+      });
+    }
+    
+    // Ajouter une ligne de risque
+    function addRiskRow() {
+      const tbody = document.querySelector('#table-risques tbody');
+      const newRow = document.createElement('tr');
+      
+      newRow.innerHTML = `
+        <td><input type="text" name="risque[]" class="risque-input"></td>
+        <td>
+          <select name="impact[]" class="impact-select">
+            <option value="">Sélectionner</option>
+            <option>Mineur</option>
+            <option>Majeur</option>
+            <option>Critique</option>
+          </select>
+        </td>
+        <td><input type="text" name="mesure[]" class="mesure-input"></td>
+        <td class="action-buttons">
+          <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
+        </td>
+      `;
+      
+      tbody.appendChild(newRow);
+      
+      // Ajouter un écouteur d'événement pour la sauvegarde automatique
+      newRow.querySelectorAll('input, select').forEach(element => {
+        element.addEventListener('change', sauvegarderDonnees);
+      });
+    }
+    
+    // Supprimer une ligne
+    function removeRow(button) {
+      const row = button.closest('tr');
+      if (document.querySelectorAll('#table-activites tbody tr').length > 1 || 
+          document.querySelectorAll('#table-risques tbody tr').length > 1) {
+        row.remove();
+        sauvegarderDonnees();
+        afficherNotification('Ligne supprimée');
+      } else {
+        afficherNotification('Vous ne pouvez pas supprimer la dernière ligne', true);
+      }
+    }
+    
+    // Sauvegarder les données dans le localStorage
+    function sauvegarderDonnees() {
+      const formData = {
+        projet: document.getElementById('projet').value,
+        objectif: document.getElementById('objectif').value,
+        prochaine: document.getElementById('prochaine').value,
+        commentaires: document.getElementById('commentaires').value,
+        activites: [],
+        risques: []
+      };
+      
+      // Récupérer les activités
+      document.querySelectorAll('#table-activites tbody tr').forEach(row => {
+        formData.activites.push({
+          activite: row.querySelector('.activite-input').value,
+          statut: row.querySelector('.statut-select').value,
+          avancement: row.querySelector('.avancement-input').value,
+          comment: row.querySelector('.comment-input').value
+        });
+      });
+      
+      // Récupérer les risques
+      document.querySelectorAll('#table-risques tbody tr').forEach(row => {
+        formData.risques.push({
+          risque: row.querySelector('.risque-input').value,
+          impact: row.querySelector('.impact-select').value,
+          mesure: row.querySelector('.mesure-input').value
+        });
+      });
+      
+      localStorage.setItem('ficheProjet', JSON.stringify(formData));
+    }
+    
+    // Charger les données depuis le localStorage
+    function chargerDonnees() {
+      const savedData = localStorage.getItem('ficheProjet');
+      if (savedData) {
+        const formData = JSON.parse(savedData);
+        
+        // Remplir les champs de base
+        document.getElementById('projet').value = formData.projet || '';
+        document.getElementById('objectif').value = formData.objectif || '';
+        document.getElementById('prochaine').value = formData.prochaine || '';
+        document.getElementById('commentaires').value = formData.commentaires || '';
+        
+        // Charger les activités
+        if (formData.activites && formData.activites.length > 0) {
+          // Supprimer les lignes existantes
+          document.querySelector('#table-activites tbody').innerHTML = '';
+          
+          formData.activites.forEach((activite, index) => {
+            addActivityRow();
+            
+            const rows = document.querySelectorAll('#table-activites tbody tr');
+            const currentRow = rows[rows.length - 1];
+            
+            currentRow.querySelector('.activite-input').value = activite.activite || '';
+            currentRow.querySelector('.statut-select').value = activite.statut || '';
+            currentRow.querySelector('.avancement-input').value = activite.avancement || '';
+            currentRow.querySelector('.comment-input').value = activite.comment || '';
+            
+            // Mettre à jour la barre de progression
+            if (activite.avancement) {
+              updateProgressBar(currentRow.querySelector('.avancement-input'));
+            }
+          });
+        }
+        
+        // Charger les risques
+        if (formData.risques && formData.risques.length > 0) {
+          // Supprimer les lignes existantes
+          document.querySelector('#table-risques tbody').innerHTML = '';
+          
+          formData.risques.forEach((risque, index) => {
+            addRiskRow();
+            
+            const rows = document.querySelectorAll('#table-risques tbody tr');
+            const currentRow = rows[rows.length - 1];
+            
+            currentRow.querySelector('.risque-input').value = risque.risque || '';
+            currentRow.querySelector('.impact-select').value = risque.impact || '';
+            currentRow.querySelector('.mesure-input').value = risque.mesure || '';
+          });
+        }
+        
+        afficherNotification('Données chargées depuis la sauvegarde');
+      }
+    }
+    
+    // Sauvegarder le formulaire
+    function sauvegarder() {
+      sauvegarderDonnees();
+      afficherNotification('Projet sauvegardé avec succès !');
+    }
+    
+    // Effacer le formulaire
+    function effacerFormulaire() {
+      if (confirm('Êtes-vous sûr de vouloir effacer toutes les données ?')) {
+        localStorage.removeItem('ficheProjet');
+        document.getElementById('ficheProjet').reset();
+        
+        // Réinitialiser les tableaux avec une ligne par défaut
+        document.querySelector('#table-activites tbody').innerHTML = `
+          <tr>
+            <td><input type="text" name="activite[]" class="activite-input" required></td>
+            <td>
+              <select name="statut[]" class="statut-select" required>
+                <option value="">Sélectionner</option>
+                <option>Non commencé</option>
+                <option>En cours</option>
+                <option>Terminé</option>
+              </select>
+            </td>
+            <td>
+              <input type="number" name="avancement[]" class="avancement-input" min="0" max="100" required oninput="updateProgressBar(this)">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+              </div>
+            </td>
+            <td><input type="text" name="comment[]" class="comment-input"></td>
+            <td class="action-buttons">
+              <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+        
+        document.querySelector('#table-risques tbody').innerHTML = `
+          <tr>
+            <td><input type="text" name="risque[]" class="risque-input"></td>
+            <td>
+              <select name="impact[]" class="impact-select">
+                <option value="">Sélectionner</option>
+                <option>Mineur</option>
+                <option>Majeur</option>
+                <option>Critique</option>
+              </select>
+            </td>
+            <td><input type="text" name="mesure[]" class="mesure-input"></td>
+            <td class="action-buttons">
+              <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+        
+        // Réattacher les écouteurs d'événements
+        document.querySelectorAll('input, textarea, select').forEach(element => {
+          element.addEventListener('change', sauvegarderDonnees);
+        });
+        
+        afficherNotification('Formulaire effacé');
+      }
+    }
+
+    // Préparer le HTML pour le PDF
+    function preparerHTMLPourPDF() {
+      const pdfContainer = document.getElementById('pdf-container');
+      pdfContainer.innerHTML = '';
+      
+      // Créer une version imprimable du formulaire
+      const formulaireClone = document.getElementById('form-container').cloneNode(true);
+      
+      // Supprimer les boutons d'action
+      formulaireClone.querySelector('.form-actions').remove();
+      
+      // Supprimer les boutons de suppression des lignes
+      formulaireClone.querySelectorAll('.action-buttons').forEach(el => el.remove());
+      
+      // Remplacer les champs de saisie par leur valeur
+      formulaireClone.querySelectorAll('input, textarea, select').forEach(element => {
+        const valeur = element.value;
+        const span = document.createElement('span');
+        span.textContent = valeur;
+        span.style.display = 'block';
+        span.style.padding = '5px 0';
+        element.parentNode.replaceChild(span, element);
+      });
+      
+      // Remplacer les barres de progression par une représentation visuelle
+      formulaireClone.querySelectorAll('.progress-bar').forEach(progressBar => {
+        const valeur = progressBar.parentNode.querySelector('input')?.value || '0';
+        const pourcentage = parseInt(valeur);
+        const barreVisual = document.createElement('div');
+        barreVisual.style.width = '100%';
+        barreVisual.style.height = '20px';
+        barreVisual.style.backgroundColor = '#f0f0f0';
+        barreVisual.style.borderRadius = '10px';
+        barreVisual.style.marginTop = '5px';
+        barreVisual.style.position = 'relative';
+        
+        const barreRemplissage = document.createElement('div');
+        barreRemplissage.style.width = `${pourcentage}%`;
+        barreRemplissage.style.height = '100%';
+        barreRemplissage.style.borderRadius = '10px';
+        
+        if (pourcentage < 30) {
+          barreRemplissage.style.backgroundColor = '#e74c3c';
+        } else if (pourcentage < 70) {
+          barreRemplissage.style.backgroundColor = '#f39c12';
+        } else {
+          barreRemplissage.style.backgroundColor = '#2ecc71';
+        }
+        
+        const textePourcentage = document.createElement('div');
+        textePourcentage.textContent = `${pourcentage}%`;
+        textePourcentage.style.position = 'absolute';
+        textePourcentage.style.top = '0';
+        textePourcentage.style.left = '0';
+        textePourcentage.style.width = '100%';
+        textePourcentage.style.textAlign = 'center';
+        textePourcentage.style.lineHeight = '20px';
+        textePourcentage.style.color = pourcentage > 50 ? 'white' : 'black';
+        textePourcentage.style.fontWeight = 'bold';
+        
+        barreVisual.appendChild(barreRemplissage);
+        barreVisual.appendChild(textePourcentage);
+        progressBar.parentNode.replaceChild(barreVisual, progressBar);
+      });
+      
+      pdfContainer.appendChild(formulaireClone);
+      
+      return pdfContainer;
+    }
+    
+    // Exporter en PDF avec html2canvas pour capturer le style - MODIFIÉ POUR FORCER UNE SEULE PAGE
+    function exporterPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'mm', 'a4');
+      
+      // Préparer le contenu pour le PDF
+      const pdfContainer = preparerHTMLPourPDF();
+      
+      // Temporairement afficher le conteneur PDF pour le rendu
+      const originalStyles = pdfContainer.getAttribute('style');
+      pdfContainer.style.position = 'fixed';
+      pdfContainer.style.left = '50%';
+      pdfContainer.style.top = '50%';
+      pdfContainer.style.transform = 'translate(-50%, -50%)';
+      pdfContainer.style.zIndex = '10000';
+      pdfContainer.style.width = '900px'; // Largeur fixe pour le rendu
+      
+      // Options pour html2canvas
+      const options = {
+        scale: 2, // Augmenter la résolution
+        useCORS: true,
+        allowTaint: true,
+        logging: false
+      };
+      
+      // Afficher un message de chargement
+      afficherNotification('Génération du PDF en cours...');
+      
+      // Capturer le contenu avec html2canvas
+      html2canvas(pdfContainer, options).then(canvas => {
+        // Restaurer les styles originaux
+        pdfContainer.setAttribute('style', originalStyles);
+        
+        const imgData = canvas.toDataURL('image/jpeg', 1.0);
+        const imgWidth = 210; // A4 width in mm
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        
+        // Calculer l'échelle pour tenir sur une seule page
+        const pageHeight = 280; // Hauteur maximale utilisable (297mm - marges)
+        let scaleFactor = 1;
+        
+        if (imgHeight > pageHeight) {
+          scaleFactor = pageHeight / imgHeight;
+        }
+        
+        // Appliquer le facteur d'échelle
+        const scaledWidth = imgWidth * scaleFactor;
+        const scaledHeight = imgHeight * scaleFactor;
+        
+        // Centrer sur la page
+        const x = (imgWidth - scaledWidth) / 2;
+        const y = (pageHeight - scaledHeight) / 2;
+        
+        // Ajouter l'image au PDF avec l'échelle calculée
+        doc.addImage(imgData, 'JPEG', x, y, scaledWidth, scaledHeight);
+        
+        // Sauvegarder le PDF
+        const nomProjet = document.getElementById('projet').value || 'Sans titre';
+        doc.save(`Fiche Projet - ${nomProjet}.pdf`);
+        
+        // Nettoyer le conteneur PDF
+        pdfContainer.innerHTML = '';
+        
+        afficherNotification('PDF exporté avec succès !');
+      }).catch(error => {
+        console.error('Erreur lors de la génération du PDF:', error);
+        afficherNotification('Erreur lors de la génération du PDF', true);
+        // Restaurer les styles originaux en cas d'erreur
+        pdfContainer.setAttribute('style', originalStyles);
+      });
+    }
+  </script>
+</body>
+</html>
