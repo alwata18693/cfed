@@ -1,1069 +1,461 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fiche Projet - CFED Mauritanie</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fiche Projet - CFED Mauritanie (Version complète)</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- html2pdf (inclut jsPDF + html2canvas) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <style>
-    :root {
-      --primary: #27ae60; /* Vert principal */
-      --primary-dark: #219653; /* Vert foncé */
-      --secondary: #c0392b; /* Rouge secondaire */
-      --accent: #f39c12; /* Jaune accent */
-      --light: #f7f9fc;
-      --dark: #34495e;
-      --success: #27ae60; /* Vert */
-      --warning: #f39c12; /* Jaune */
-      --danger: #e74c3c; /* Rouge */
-      --gray: #ecf0f1;
-      --border: #ddd;
-      --font-size-base: 15px;
-      --font-size-small: 13px;
-      --font-size-large: 18px;
-      --font-size-xlarge: 22px;
-      --line-height: 1.6;
+    :root{
+      --primary:#27ae60;--primary-dark:#219653;--secondary:#c0392b;--accent:#f39c12;--info:#2980b9;
+      --light:#f7f9fc;--dark:#34495e;--muted:#6b7280;--success:#2ecc71;--warning:#f39c12;--danger:#e74c3c;
+      --gray:#ecf0f1;--border:#e5e7eb;--soft-shadow:0 10px 16px rgba(0,0,0,.06);
+      --font-size-xs:12px;--font-size-sm:13px;--font-size-base:15px;--font-size-md:16px;--font-size-lg:18px;--font-size-xl:22px;--font-size-2xl:26px;
+      --line-height:1.6;--radius:12px;--radius-sm:8px;--radius-lg:18px;--container-w:1080px;
     }
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,Liberation Sans,sans-serif;
+      background:var(--light);color:var(--dark);font-size:var(--font-size-base);line-height:var(--line-height);
+      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;
+      padding:24px;
     }
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: var(--light);
-      color: var(--dark);
-      line-height: var(--line-height);
-      font-size: var(--font-size-base);
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-    
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-      overflow: hidden;
-      position: relative;
-    }
+    .container{width:100%;max-width:var(--container-w);margin:0 auto;background:#fff;border-radius:var(--radius);box-shadow:var(--soft-shadow);overflow:hidden;position:relative}
+    .header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:#fff;padding:28px 24px 26px;text-align:center;position:relative;isolation:isolate}
+    .header::after{content:'';position:absolute;inset:0;background:
+      radial-gradient(1200px 400px at 10% 0%,rgba(255,255,255,.08),transparent 50%),
+      radial-gradient(1000px 480px at 90% 0%,rgba(255,255,255,.06),transparent 55%);
+      pointer-events:none;z-index:-1}
+    .header-flex{display:grid;grid-template-columns:120px 1fr 160px;gap:16px;align-items:center;justify-content:center}
+    .logo-wrap{display:flex;align-items:center;justify-content:center}
+    .logo{width:96px;height:96px;border-radius:999px;overflow:hidden;background:#fff;border:4px solid rgba(255,255,255,.35);box-shadow:0 10px 18px rgba(0,0,0,.12)}
+    .logo img{width:100%;height:100%;object-fit:cover;display:block}
+    .header h1{font-size:24px;font-weight:700;letter-spacing:.2px}
+    .header h2{font-size:16px;font-weight:500;opacity:.95;margin-top:4px}
+    .badge{display:inline-flex;gap:8px;align-items:center;justify-content:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;padding:8px 12px;border-radius:999px;margin-top:10px;font-size:12px;font-weight:500}
+    .title-bar{background:var(--gray);color:var(--secondary);padding:16px;text-align:center;font-weight:700;font-size:var(--font-size-xl);border-bottom:1px solid var(--border)}
+    form#ficheProjet{padding:24px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+    .section{margin-bottom:28px;padding-bottom:18px;border-bottom:1px dashed var(--border);page-break-inside:avoid}
+    .section-title{font-size:var(--font-size-lg);color:var(--primary);border-bottom:2px solid var(--primary);padding-bottom:8px;margin-bottom:14px;display:flex;gap:10px;align-items:center}
+    .field{margin-bottom:14px}
+    .field label{display:block;font-weight:600;color:var(--secondary);margin-bottom:6px}
+    .field input[type=text],.field input[type=number],.field input[type=date],.field input[type=email],.field textarea,.field select{
+      width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:8px;font-size:var(--font-size-md);transition:box-shadow .2s,border-color .2s;background:#fff}
+    .field textarea{min-height:96px;resize:vertical}
+    .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(39,174,96,.18)}
+    .table-wrap{width:100%;overflow-x:auto}
+    table{width:100%;border-collapse:collapse;margin-top:10px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+    thead th{background:var(--primary);color:#fff;text-align:left;font-weight:600;padding:12px 14px;position:sticky;top:0}
+    tbody td{border-bottom:1px solid var(--border);padding:10px 14px;vertical-align:top}
+    tbody tr:nth-child(even){background:#fafafa}
+    .actions{display:flex;gap:8px}
+    .btn{appearance:none;border:0;cursor:pointer;padding:10px 14px;border-radius:8px;font-weight:600;font-size:14px;transition:transform .12s,box-shadow .12s,background .2s;display:inline-flex;align-items:center;gap:8px}
+    .btn-sm{padding:6px 10px;font-size:12px;border-radius:6px}
+    .btn:active{transform:translateY(1px)}
+    .btn-primary{background:var(--primary);color:#fff}.btn-danger{background:var(--secondary);color:#fff}
+    .btn-success{background:var(--success);color:#fff}.btn-warning{background:var(--warning);color:#fff}
+    .btn-ghost{background:transparent;color:var(--dark);border:1px dashed var(--border)}
+    .progress{height:8px;background:#eef2f7;border-radius:999px;overflow:hidden;margin-top:6px}.progress .bar{height:100%;width:0%;background:var(--success);transition:width .35s}
+    .chips{display:flex;gap:6px;flex-wrap:wrap}.chip{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;padding:6px 10px;border-radius:999px;font-size:12px}
+    .toolbar{display:flex;gap:10px;justify-content:flex-end;align-items:center;padding-top:10px;border-top:1px solid var(--border);margin-top:18px}
+    .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:10px}
+    .kpi{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;box-shadow:0 4px 10px rgba(0,0,0,.03);display:grid;gap:2px;align-content:center}
+    .kpi .kpi-label{font-size:12px;color:#64748b}.kpi .kpi-value{font-size:20px;font-weight:700;color:var(--dark)}
+    .toast{position:fixed;bottom:22px;right:22px;background:var(--success);color:#fff;padding:14px 16px;border-radius:10px;box-shadow:0 10px 20px rgba(0,0,0,.1);opacity:0;pointer-events:none;transform:translateY(10px);transition:all .25s;z-index:10000}
+    .toast.show{opacity:1;transform:translateY(0);pointer-events:all}.toast.error{background:var(--secondary)}
+    @media print{body{background:#fff;padding:0}.container{max-width:100%;border-radius:0;box-shadow:none}.toolbar{display:none!important}thead th{position:static}}
+    .hidden{display:none!important}
+    .warning-banner{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;padding:10px 12px;border-radius:8px;display:none}
+    .avoid-break{break-inside:avoid;page-break-inside:avoid}
 
-    .header {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); /* Dégradé de vert */
-      color: white;
-      padding: 25px;
-      text-align: center;
-      position: relative;
+    /* Rendu PDF des zones longues : multi-ligne + justifié + césures FR */
+    .print-field{display:block;width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;font:inherit;color:inherit}
+    .print-field.multiline{
+      white-space:pre-wrap;
+      line-height:var(--line-height);
+      text-align:justify;
+      hyphens:auto;
+      overflow-wrap:anywhere;
     }
-
-    .header-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .logo-container {
-      width: 90px;
-      height: 90px;
-      margin-bottom: 15px;
-      border: 3px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: white;
-    }
-    
-    .logo-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .header h1 {
-      font-size: 24px;
-      margin: 5px 0;
-      font-weight: 600;
-    }
-    
-    .header h2 {
-      font-size: 18px;
-      margin: 0;
-      font-weight: 400;
-      opacity: 0.9;
-    }
-    
-    .form-title {
-      background: var(--gray);
-      padding: 15px;
-      text-align: center;
-      color: var(--secondary); /* Rouge */
-      font-size: var(--font-size-xlarge);
-      font-weight: 600;
-      border-bottom: 1px solid var(--border);
-    }
-    
-    form {
-      padding: 25px;
-    }
-    
-    .form-section {
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px dashed var(--border);
-      page-break-inside: avoid;
-    }
-    
-    .form-section:last-child {
-      border-bottom: none;
-    }
-    
-    .section-title {
-      color: var(--primary); /* Vert */
-      font-size: var(--font-size-large);
-      margin-bottom: 15px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid var(--primary); /* Vert */
-      display: flex;
-      align-items: center;
-    }
-    
-    .section-title i {
-      margin-right: 10px;
-    }
-    
-    .form-group {
-      margin-bottom: 20px;
-    }
-    
-    label {
-      font-weight: 500;
-      display: block;
-      margin-bottom: 8px;
-      color: var(--secondary); /* Rouge */
-    }
-    
-    input[type="text"], input[type="number"], textarea, select {
-      width: 100%;
-      padding: 12px 15px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-family: 'Poppins', sans-serif;
-      font-size: var(--font-size-base);
-      transition: all 0.3s;
-    }
-    
-    input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
-      outline: none;
-      border-color: var(--primary); /* Vert */
-      box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2); /* Vert avec transparence */
-    }
-    
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 15px 0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      page-break-inside: auto;
-    }
-    
-    table th {
-      background-color: var(--primary); /* Vert */
-      color: white;
-      font-weight: 500;
-      text-align: left;
-      padding: 12px 15px;
-      font-size: var(--font-size-base);
-    }
-    
-    table td {
-      padding: 12px 15px;
-      border-bottom: 1px solid var(--border);
-      font-size: var(--font-size-base);
-    }
-    
-    table tr {
-      page-break-inside: avoid;
-      page-break-after: auto;
-    }
-    
-    table tr:nth-child(even) {
-      background-color: #f8f9fa;
-    }
-    
-    table tr:hover {
-      background-color: #e9f7fe;
-    }
-    
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 6px;
-      font-family: 'Poppins', sans-serif;
-      font-size: var(--font-size-base);
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .btn i {
-      margin-right: 8px;
-    }
-    
-    .btn-primary {
-      background: var(--primary); /* Vert */
-      color: white;
-    }
-    
-    .btn-primary:hover {
-      background: var(--primary-dark); /* Vert foncé */
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    
-    .btn-success {
-      background: var(--success); /* Vert */
-      color: white;
-    }
-    
-    .btn-success:hover {
-      background: #219653; /* Vert foncé */
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    
-    .btn-danger {
-      background: var(--secondary); /* Rouge */
-      color: white;
-    }
-    
-    .btn-danger:hover {
-      background: #a23529; /* Rouge foncé */
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    
-    .btn-warning {
-      background: var(--warning); /* Jaune */
-      color: white;
-    }
-    
-    .btn-warning:hover {
-      background: #d68910; /* Jaune foncé */
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    
-    .btn-sm {
-      padding: 6px 12px;
-      font-size: var(--font-size-small);
-    }
-    
-    .form-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 15px;
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-    }
-    
-    .progress-bar {
-      height: 8px;
-      background: #eee;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-top: 5px;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background: var(--success); /* Vert */
-      border-radius: 4px;
-      transition: width 0.5s;
-    }
-    
-    .action-buttons {
-      display: flex;
-      gap: 8px;
-    }
-    
-    .empty-row {
-      text-align: center;
-      color: #999;
-      font-style: italic;
-      padding: 20px;
-    }
-
-    /* Styles pour l'impression et le PDF */
-    @media print {
-      body {
-        padding: 0;
-        background: white;
-        font-size: 12pt;
-        line-height: 1.4;
-      }
-      
-      .container {
-        box-shadow: none;
-        border-radius: 0;
-        max-width: 100%;
-      }
-      
-      .btn, .action-buttons {
-        display: none !important;
-      }
-      
-      .form-actions {
-        display: none;
-      }
-      
-      table {
-        box-shadow: none;
-      }
-      
-      .header {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      
-      table th {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      
-      /* En-tête et pied de page pour impression */
-      @page {
-        margin: 1.5cm 1cm 2cm 1cm;
-        
-        @top-center {
-          content: element(pageHeader);
-        }
-        
-        @bottom-center {
-          content: element(pageFooter);
-        }
-      }
-
-      .page-header {
-        position: running(pageHeader);
-        width: 100%;
-        text-align: center;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-        margin-bottom: 15px;
-        font-weight: bold;
-        color: var(--primary); /* Vert */
-      }
-
-      .page-footer {
-        position: running(pageFooter);
-        text-align: center;
-        font-size: 10pt;
-        color: var(--secondary); /* Rouge */
-        border-top: 1px solid #ddd;
-        padding-top: 5px;
-      }
-
-      .new-page {
-        page-break-before: always;
-      }
-      
-      /* Masquer les éléments inutiles à l'impression */
-      .no-print {
-        display: none !important;
-      }
-    }
-
-    .pdf-only {
-      display: none;
-    }
-    
-    @media (max-width: 768px) {
-      body {
-        padding: 10px;
-        font-size: 14px;
-      }
-      
-      .container {
-        border-radius: 8px;
-      }
-      
-      .header {
-        padding: 20px 15px;
-      }
-      
-      .header h1 {
-        font-size: 20px;
-      }
-      
-      .header h2 {
-        font-size: 16px;
-      }
-      
-      form {
-        padding: 15px;
-      }
-      
-      table {
-        display: block;
-        overflow-x: auto;
-      }
-      
-      .form-actions {
-        flex-direction: column;
-      }
-      
-      .btn {
-        width: 100%;
-        margin-bottom: 10px;
-      }
-    }
-    
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 15px 20px;
-      background: var(--success); /* Vert */
-      color: white;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.3s;
-      z-index: 1000;
-    }
-    
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .toast.error {
-      background: var(--secondary); /* Rouge */
-    }
-
-    #pdf-container {
-      position: absolute;
-      left: -9999px;
-      top: -9999px;
-      width: 1000px;
-      padding: 20px;
-    }
-
-    .pdf-page {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-      overflow: hidden;
-      margin-bottom: 20px;
-      page-break-after: always;
-    }
+    /* Justifier aussi à l’écran pour ces 4 zones */
+    .justify-text{ text-align: justify; }
   </style>
 </head>
+
 <body>
-
-  <div class="container" id="form-container">
-    <!-- Header avec logo et titres -->
+  <div class="container" id="form-container" aria-live="polite">
     <div class="header">
-      <div class="header-content">
-        <div class="logo-container">
-          <img src="cfed.jpg" alt="Logo CFED Mauritanie">
+      <div class="header-flex">
+        <div class="logo-wrap">
+          <div class="logo" aria-hidden="true">
+            <img src="cfed.jpg" alt="Logo CFED Mauritanie" />
+          </div>
         </div>
-        <h1>Centre de Formation et d'Échanges à Distance de Mauritanie</h1>
-        <h2>مركز التكوين والتبادل عن بعد</h2>
+        <div>
+          <h1>Centre de Formation et d'Échanges à Distance de Mauritanie</h1>
+          <h2>مركز التكوين والتبادل عن بعد</h2>
+          <div class="badge"><i class="fa-solid fa-clipboard-list"></i><span>Fiche Projet</span></div>
+        </div>
+        <div class="logo-wrap"><div class="chip" title="Version du modèle">v1.0 — PDF Pro</div></div>
       </div>
     </div>
 
-    <div class="form-title">
-      FICHE PROJET
-    </div>
+    <div class="title-bar">FICHE PROJET</div>
 
-    <form id="ficheProjet">
-      <!-- En-tête de page pour impression -->
-      <div class="page-header no-print">
-        Fiche Projet - CFED Mauritanie
-      </div>
-      
-      <!-- Pied de page pour impression -->
-      <div class="page-footer no-print">
-        Page <span class="pageNumber"></span> sur <span class="totalPages"></span>
+    <form id="ficheProjet" autocomplete="on">
+      <div id="validationBanner" class="warning-banner" role="alert">
+        <strong>Champs requis manquants :</strong> <span id="validationMissing"></span>
       </div>
 
-      <div class="form-section">
-        <div class="form-group">
-          <label for="projet">Projet :</label>
-          <input type="text" id="projet" name="projet" required>
+      <section class="section" id="section-meta">
+        <div class="section-title"><i class="fa-solid fa-id-card-clip"></i> Informations générales</div>
+        <div class="grid-2">
+          <div class="field">
+            <label for="projet">Projet <span class="text-danger">*</span></label>
+            <input type="text" id="projet" name="projet" required placeholder="Ex : Déploiement plateforme e-learning">
+          </div>
+          <div class="field">
+            <label for="responsable">Responsable</label>
+            <input type="text" id="responsable" name="responsable" placeholder="Nom du chef de projet">
+          </div>
         </div>
-
-        <div class="form-group">
-          <label for="objectif">Objectif :</label>
-          <textarea id="objectif" name="objectif" rows="3" required></textarea>
+        <div class="grid-3">
+          <div class="field"><label for="dateDebut">Date de début</label><input type="date" id="dateDebut" name="dateDebut"></div>
+          <div class="field"><label for="dateFin">Date de fin (prévue)</label><input type="date" id="dateFin" name="dateFin"></div>
+          <div class="field">
+            <label for="priorite">Priorité</label>
+            <select id="priorite" name="priorite"><option value="">Sélectionner</option><option>Faible</option><option>Moyenne</option><option>Haute</option><option>Critique</option></select>
+          </div>
         </div>
-      </div>
-
-      <div class="form-section">
-        <h3 class="section-title"><i class="fas fa-tasks"></i> État d'avancement global</h3>
-        
-        <table id="table-activites">
-          <thead>
-            <tr>
-              <th width="30%">Composante / Activité principale</th>
-              <th width="15%">Statut</th>
-              <th width="15%">État d'avancement (%)</th>
-              <th width="30%">Commentaires</th>
-              <th width="10%">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="text" name="activite[]" class="activite-input" value="Développement de la plateforme e-learning" required></td>
-              <td>
-                <select name="statut[]" class="statut-select" required>
-                  <option value="">Sélectionner</option>
-                  <option selected>En cours</option>
-                  <option>Non commencé</option>
-                  <option>Terminé</option>
-                </select>
-              </td>
-              <td>
-                <input type="number" name="avancement[]" class="avancement-input" min="0" max="100" value="65" required oninput="updateProgressBar(this)">
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width: 65%"></div>
-                </div>
-              </td>
-              <td><input type="text" name="comment[]" class="comment-input" value="Intégration des modules en cours"></td>
-              <td class="action-buttons">
-                <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <button type="button" class="btn btn-primary no-print" onclick="addActivityRow()">
-          <i class="fas fa-plus"></i> Ajouter une activité
-        </button>
-      </div>
-
-      <div class="form-section">
-        <div class="form-group">
-          <label for="prochaine">Prochaine étape clé :</label>
-          <textarea id="prochaine" name="prochaine" rows="2"></textarea>
+        <div class="field">
+          <label for="descriptif">Descriptif <span class="text-danger">*</span></label>
+          <textarea class="justify-text" id="descriptif" name="descriptif" required placeholder="Brève description du projet, contexte et portée..."></textarea>
         </div>
-      </div>
-
-      <div class="form-section">
-        <h3 class="section-title"><i class="fas fa-exclamation-triangle"></i> Risques ou blocages identifiés</h3>
-        
-        <table id="table-risques">
-          <thead>
-            <tr>
-              <th width="30%">Description du risque / blocage</th>
-              <th width="20%">Niveau d'impact</th>
-              <th width="40%">Mesures envisagées</th>
-              <th width="10%">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="text" name="risque[]" class="risque-input" value="Retard dans la livraison des contenus pédagogiques"></td>
-              <td>
-                <select name="impact[]" class="impact-select">
-                  <option value="">Sélectionner</option>
-                  <option>Mineur</option>
-                  <option selected>Majeur</option>
-                  <option>Critique</option>
-                </select>
-              </td>
-              <td><input type="text" name="mesure[]" class="mesure-input" value="Établir un calendrier contraignant avec les formateurs"></td>
-              <td class="action-buttons">
-                <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <button type="button" class="btn btn-primary no-print" onclick="addRiskRow()">
-          <i class="fas fa-plus"></i> Ajouter un risque
-        </button>
-      </div>
-
-      <div class="form-section">
-        <div class="form-group">
-          <label for="commentaires">Commentaires / Recommandations :</label>
-          <textarea id="commentaires" name="commentaires" rows="3"></textarea>
+        <div class="field">
+          <label for="objectif">Objectif <span class="text-danger">*</span></label>
+          <textarea class="justify-text" id="objectif" name="objectif" required placeholder="Objectif principal, résultats attendus..."></textarea>
         </div>
-      </div>
+      </section>
 
-      <div class="form-actions no-print">
-        <button type="button" class="btn btn-primary" onclick="sauvegarder()">
-          <i class="fas fa-save"></i> Sauvegarder
-        </button>
-        <button type="button" class="btn btn-success" onclick="exporterPDF()">
-          <i class="fas fa-file-pdf"></i> Exporter en PDF
-        </button>
-        <button type="button" class="btn btn-danger" onclick="effacerFormulaire()">
-          <i class="fas fa-trash"></i> Effacer tout
-        </button>
+      <section class="section" id="section-avancement">
+        <div class="section-title"><i class="fa-solid fa-tasks"></i> État d'avancement global</div>
+        <div class="table-wrap">
+          <table id="table-activites">
+            <thead>
+              <tr>
+                <th style="width:28%">Composante / Activité principale</th>
+                <th style="width:14%">Statut</th>
+                <th style="width:16%">Avancement (%)</th>
+                <th style="width:32%">Commentaires</th>
+                <th style="width:10%">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" name="activite[]" class="activite-input" value="Développement de la plateforme e-learning" placeholder="Saisir l'activité"></td>
+                <td>
+                  <select name="statut[]" class="statut-select">
+                    <option value="">Sélectionner</option><option selected>En cours</option><option>Non commencé</option><option>Terminé</option><option>En pause</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="number" name="avancement[]" class="avancement-input" min="0" max="100" value="65" oninput="updateProgressBar(this)">
+                  <div class="progress"><div class="bar" style="width:65%"></div></div>
+                </td>
+                <td><input type="text" name="comment[]" class="comment-input" value="Intégration des modules en cours" placeholder="Notes, obstacles, dépendances..."></td>
+                <td class="actions"><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)" title="Supprimer la ligne"><i class="fa-solid fa-trash"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="toolbar">
+          <div class="chips"><span class="chip">KPI</span><span class="chip">Suivi</span></div>
+          <div>
+            <button type="button" class="btn btn-ghost" onclick="fillDemoActivities()"><i class="fa-solid fa-wand-magic-sparkles"></i> Démo</button>
+            <button type="button" class="btn btn-primary" onclick="addActivityRow()"><i class="fa-solid fa-plus"></i> Ajouter</button>
+            <button type="button" class="btn btn-warning" onclick="clearEmptyActivityRows()"><i class="fa-solid fa-broom"></i> Nettoyer</button>
+          </div>
+        </div>
+        <div class="kpi-row" id="kpiGlobal">
+          <div class="kpi"><div class="kpi-label">Avancement moyen</div><div class="kpi-value" id="kpiAvg">—</div></div>
+          <div class="kpi"><div class="kpi-label">En cours</div><div class="kpi-value" id="kpiInProgress">—</div></div>
+          <div class="kpi"><div class="kpi-label">Terminés</div><div class="kpi-value" id="kpiDone">—</div></div>
+          <div class="kpi"><div class="kpi-label">Total activités</div><div class="kpi-value" id="kpiTotal">—</div></div>
+        </div>
+      </section>
+
+      <section class="section" id="section-next">
+        <div class="section-title"><i class="fa-solid fa-person-running"></i> Prochaine étape clé</div>
+        <div class="field"><textarea class="justify-text" id="prochaine" name="prochaine" rows="3" placeholder="Par ex. revue de sprint, atelier, jalon…"></textarea></div>
+      </section>
+
+      <section class="section" id="section-risques">
+        <div class="section-title"><i class="fa-solid fa-triangle-exclamation"></i> Risques ou blocages identifiés</div>
+        <div class="table-wrap">
+          <table id="table-risques">
+            <thead>
+              <tr><th style="width:30%">Description</th><th style="width:22%">Impact</th><th style="width:38%">Mesures</th><th style="width:10%">Actions</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" name="risque[]" class="risque-input" value="Retard livraison des contenus pédagogiques" placeholder="Décrire le risque…"></td>
+                <td>
+                  <select name="impact[]" class="impact-select"><option value="">Sélectionner</option><option>Mineur</option><option selected>Majeur</option><option>Critique</option></select>
+                </td>
+                <td><input type="text" name="mesure[]" class="mesure-input" value="Établir un calendrier contraignant avec les formateurs" placeholder="Mesures d'atténuation…"></td>
+                <td class="actions"><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fa-solid fa-trash"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="toolbar">
+          <div class="chips"><span class="chip">Planning</span><span class="chip">Financier</span><span class="chip">Technique</span></div>
+          <div>
+            <button type="button" class="btn btn-ghost" onclick="fillDemoRisks()"><i class="fa-solid fa-wand-magic-sparkles"></i> Démo</button>
+            <button type="button" class="btn btn-primary" onclick="addRiskRow()"><i class="fa-solid fa-plus"></i> Ajouter</button>
+            <button type="button" class="btn btn-warning" onclick="clearEmptyRiskRows()"><i class="fa-solid fa-broom"></i> Nettoyer</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="section-comments">
+        <div class="section-title"><i class="fa-solid fa-comment-dots"></i> Commentaires / Recommandations</div>
+        <div class="field"><textarea class="justify-text" id="commentaires" name="commentaires" rows="3" placeholder="Observations générales, recommandations, décisions, besoins…"></textarea></div>
+      </section>
+
+      <div class="toolbar no-print" aria-label="Commandes">
+        <button type="button" class="btn btn-ghost" onclick="sauvegarderDonnees()"><i class="fa-solid fa-save"></i> Sauvegarder</button>
+        <button type="button" class="btn btn-ghost" onclick="effacerFormulaire()"><i class="fa-solid fa-trash-can"></i> Effacer</button>
+        <button type="button" class="btn btn-success" onclick="exporterPDF()"><i class="fa-solid fa-file-pdf"></i> Exporter en PDF</button>
       </div>
     </form>
   </div>
 
-  <div id="pdf-container"></div>
-
-  <div class="toast" id="toast"></div>
-
-  <!-- Import jsPDF et html2canvas depuis CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <div id="pdf-container" class="hidden" aria-hidden="true"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    // Initialisation
-    document.addEventListener('DOMContentLoaded', function() {
-      chargerDonnees();
-      // Mettre à jour les barres de progression initiales
-      document.querySelectorAll('.avancement-input').forEach(input => {
-        updateProgressBar(input);
-      });
-      
-      // Ajouter des écouteurs d'événements pour la sauvegarde automatique
-      document.querySelectorAll('input, textarea, select').forEach(element => {
-        element.addEventListener('change', sauvegarderDonnees);
-      });
-    });
+    /* Toast */
+    function toast(msg, isError=false, timeout=2500){
+      const el=document.getElementById('toast'); el.textContent=msg;
+      el.className='toast'+(isError?' error':''); el.classList.add('show');
+      clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'), timeout);
+    }
+    const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+    const fmtPercent=n=>isNaN(n)||n===''||n===null?'—':`${Math.round(n)}%`;
 
-    // Fonction pour afficher les notifications
-    function afficherNotification(message, isError = false) {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.className = 'toast' + (isError ? ' error' : '');
-      toast.classList.add('show');
-      
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
+    /* Progress */
+    function updateProgressBar(input){
+      const v=clamp(Number(input.value||0),0,100); input.value=String(v);
+      const bar=input.parentElement.querySelector('.bar'); if(bar){bar.style.width=v+'%';bar.style.background=v<30?'#e74c3c':(v<70?'#f39c12':'#2ecc71')}
+      computeKPIs(); autoSaveThrottle();
     }
-    
-    // Mettre à jour la barre de progression
-    function updateProgressBar(input) {
-      const progressFill = input.parentElement.querySelector('.progress-fill');
-      progressFill.style.width = input.value + '%';
-      
-      // Changer la couleur en fonction du pourcentage
-      if (input.value < 30) {
-        progressFill.style.background = '#e74c3c';
-      } else if (input.value < 70) {
-        progressFill.style.background = '#f39c12';
-      } else {
-        progressFill.style.background = '#2ecc71';
-      }
-    }
-    
-    // Ajouter une ligne d'activité
-    function addActivityRow() {
-      const tbody = document.querySelector('#table-activites tbody');
-      const newRow = document.createElement('tr');
-      
-      newRow.innerHTML = `
-        <td><input type="text" name="activite[]" class="activite-input" required></td>
+
+    /* Tables */
+    function addActivityRow(initial={activite:'',statut:'',avancement:'',comment:''}){
+      const tbody=document.querySelector('#table-activites tbody'); const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td><input type="text" name="activite[]" class="activite-input" value="${escapeHtml(initial.activite)}" placeholder="Saisir l'activité"></td>
         <td>
-          <select name="statut[]" class="statut-select" required>
+          <select name="statut[]" class="statut-select">
             <option value="">Sélectionner</option>
-            <option>Non commencé</option>
-            <option>En cours</option>
-            <option>Terminé</option>
+            <option ${initial.statut==='Non commencé'?'selected':''}>Non commencé</option>
+            <option ${initial.statut==='En cours'?'selected':''}>En cours</option>
+            <option ${initial.statut==='Terminé'?'selected':''}>Terminé</option>
+            <option ${initial.statut==='En pause'?'selected':''}>En pause</option>
           </select>
         </td>
         <td>
-          <input type="number" name="avancement[]" class="avancement-input" min="0" max="100" required oninput="updateProgressBar(this)">
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 0%"></div>
-          </div>
+          <input type="number" name="avancement[]" class="avancement-input" min="0" max="100" value="${initial.avancement!==''?Number(initial.avancement):''}" oninput="updateProgressBar(this)">
+          <div class="progress"><div class="bar" style="width:${Number(initial.avancement||0)}%"></div></div>
         </td>
-        <td><input type="text" name="comment[]" class="comment-input"></td>
-        <td class="action-buttons">
-          <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
-        </td>
-      `;
-      
-      tbody.appendChild(newRow);
-      
-      // Ajouter un écouteur d'événement pour la sauvegarde automatique
-      newRow.querySelectorAll('input, select').forEach(element => {
-        element.addEventListener('change', sauvegarderDonnees);
-      });
+        <td><input type="text" name="comment[]" class="comment-input" value="${escapeHtml(initial.comment)}" placeholder="Notes, obstacles, dépendances..."></td>
+        <td class="actions"><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fa-solid fa-trash"></i></button></td>`;
+      tbody.appendChild(tr); attachRowListeners(tr); computeKPIs(); autoSaveThrottle(); return tr;
     }
-    
-    // Ajouter une ligne de risque
-    function addRiskRow() {
-      const tbody = document.querySelector('#table-risques tbody');
-      const newRow = document.createElement('tr');
-      
-      newRow.innerHTML = `
-        <td><input type="text" name="risque[]" class="risque-input"></td>
+    function addRiskRow(initial={risque:'',impact:'',mesure:''}){
+      const tbody=document.querySelector('#table-risques tbody'); const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td><input type="text" name="risque[]" class="risque-input" value="${escapeHtml(initial.risque)}" placeholder="Décrire le risque…"></td>
         <td>
           <select name="impact[]" class="impact-select">
             <option value="">Sélectionner</option>
-            <option>Mineur</option>
-            <option>Majeur</option>
-            <option>Critique</option>
+            <option ${initial.impact==='Mineur'?'selected':''}>Mineur</option>
+            <option ${initial.impact==='Majeur'?'selected':''}>Majeur</option>
+            <option ${initial.impact==='Critique'?'selected':''}>Critique</option>
           </select>
         </td>
-        <td><input type="text" name="mesure[]" class="mesure-input"></td>
-        <td class="action-buttons">
-          <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
-        </td>
-      `;
-      
-      tbody.appendChild(newRow);
-      
-      // Ajouter un écouteur d'événement pour la sauvegarde automatique
-      newRow.querySelectorAll('input, select').forEach(element => {
-        element.addEventListener('change', sauvegarderDonnees);
+        <td><input type="text" name="mesure[]" class="mesure-input" value="${escapeHtml(initial.mesure)}" placeholder="Mesures d'atténuation…"></td>
+        <td class="actions"><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fa-solid fa-trash"></i></button></td>`;
+      tbody.appendChild(tr); attachRowListeners(tr); autoSaveThrottle(); return tr;
+    }
+    function removeRow(btn){
+      const tr=btn.closest('tr'), table=tr.closest('table');
+      if(table.tBodies[0].rows.length>1){tr.remove(); if(table.id==='table-activites') computeKPIs(); autoSaveThrottle(); toast('Ligne supprimée')}
+      else toast('Vous ne pouvez pas supprimer la dernière ligne',true);
+    }
+    function clearEmptyActivityRows(){
+      const rows=[...document.querySelectorAll('#table-activites tbody tr')]; let removed=0;
+      rows.forEach(tr=>{const a=tr.querySelector('.activite-input')?.value?.trim(),s=tr.querySelector('.statut-select')?.value?.trim(),p=tr.querySelector('.avancement-input')?.value?.trim(),c=tr.querySelector('.comment-input')?.value?.trim();
+        if(!a&&!s&&!p&&!c && rows.length-removed>1){tr.remove();removed++}});
+      if(removed>0){computeKPIs();autoSaveThrottle();toast(`${removed} ligne(s) vide(s) supprimée(s)`)}
+    }
+    function clearEmptyRiskRows(){
+      const rows=[...document.querySelectorAll('#table-risques tbody tr')]; let removed=0;
+      rows.forEach(tr=>{const r=tr.querySelector('.risque-input')?.value?.trim(),i=tr.querySelector('.impact-select')?.value?.trim(),m=tr.querySelector('.mesure-input')?.value?.trim();
+        if(!r&&!i&&!m && rows.length-removed>1){tr.remove();removed++}});
+      if(removed>0){autoSaveThrottle();toast(`${removed} ligne(s) vide(s) supprimée(s)`)}
+    }
+    function attachRowListeners(tr){
+      tr.querySelectorAll('input,select,textarea').forEach(el=>{
+        el.addEventListener('input',()=>{if(el.classList.contains('avancement-input')) updateProgressBar(el); autoSaveThrottle();});
+        el.addEventListener('change',autoSaveThrottle);
       });
     }
-    
-    // Supprimer une ligne
-    function removeRow(button) {
-      const row = button.closest('tr');
-      if (document.querySelectorAll('#table-activites tbody tr').length > 1 || 
-          document.querySelectorAll('#table-risques tbody tr').length > 1) {
-        row.remove();
-        sauvegarderDonnees();
-        afficherNotification('Ligne supprimée');
-      } else {
-        afficherNotification('Vous ne pouvez pas supprimer la dernière ligne', true);
-      }
+    function fillDemoActivities(){
+      const demo=[{activite:'Analyse des besoins et cadrage',statut:'Terminé',avancement:100,comment:'Rapport validé'},
+                  {activite:'Architecture technique & sécurité',statut:'En cours',avancement:75,comment:'Choix proxy & SSO'},
+                  {activite:'Développement modules e-learning',statut:'En cours',avancement:60,comment:'3/5 modules prêts'},
+                  {activite:'Formation des formateurs',statut:'Non commencé',avancement:0,comment:''}];
+      document.querySelector('#table-activites tbody').innerHTML=''; demo.forEach(addActivityRow); computeKPIs(); autoSaveThrottle(); toast('Lignes de démonstration ajoutées');
     }
-    
-    // Sauvegarder les données dans le localStorage
-    function sauvegarderDonnees() {
-      const formData = {
-        projet: document.getElementById('projet').value,
-        objectif: document.getElementById('objectif').value,
-        prochaine: document.getElementById('prochaine').value,
-        commentaires: document.getElementById('commentaires').value,
-        activites: [],
-        risques: []
+    function fillDemoRisks(){
+      const demo=[{risque:'Sous-estimation de charge',impact:'Majeur',mesure:'Réallocation ressources / priorisation'},
+                  {risque:'Retards approbations budgétaires',impact:'Critique',mesure:'Plan B budgétaire et phasage'}];
+      document.querySelector('#table-risques tbody').innerHTML=''; demo.forEach(addRiskRow); autoSaveThrottle(); toast('Risques de démonstration ajoutés');
+    }
+
+    /* KPIs */
+    function computeKPIs(){
+      const rows=[...document.querySelectorAll('#table-activites tbody tr')]; if(!rows.length) return;
+      let sum=0,count=0,done=0,prog=0;
+      rows.forEach(tr=>{const statut=tr.querySelector('.statut-select')?.value||'',av=Number(tr.querySelector('.avancement-input')?.value||0);
+        if(!isNaN(av)){sum+=av;count++} if(statut==='Terminé') done++; if(statut==='En cours') prog++;});
+      const avg=count?(sum/count):0; g('kpiAvg').textContent=isNaN(avg)?'—':`${Math.round(avg)}%`;
+      g('kpiInProgress').textContent=String(prog); g('kpiDone').textContent=String(done); g('kpiTotal').textContent=String(rows.length);
+    }
+
+    /* LocalStorage */
+    const LS_KEY='cfed_fiche_projet_v1'; let _autosaveTimer=null;
+    const g=id=>document.getElementById(id);
+    const val=id=>g(id)?.value||'';
+    function autoSaveThrottle(){ if(_autosaveTimer) clearTimeout(_autosaveTimer); _autosaveTimer=setTimeout(sauvegarderDonnees,400); }
+    function collectFormData(){
+      const data={projet:val('projet'),responsable:val('responsable'),dateDebut:val('dateDebut'),dateFin:val('dateFin'),priorite:val('priorite'),
+        descriptif:val('descriptif'),objectif:val('objectif'),prochaine:val('prochaine'),commentaires:val('commentaires'),activites:[],risques:[]};
+      document.querySelectorAll('#table-activites tbody tr').forEach(tr=>data.activites.push({activite:tr.querySelector('.activite-input')?.value||'',statut:tr.querySelector('.statut-select')?.value||'',avancement:tr.querySelector('.avancement-input')?.value||'',comment:tr.querySelector('.comment-input')?.value||''}));
+      document.querySelectorAll('#table-risques tbody tr').forEach(tr=>data.risques.push({risque:tr.querySelector('.risque-input')?.value||'',impact:tr.querySelector('.impact-select')?.value||'',mesure:tr.querySelector('.mesure-input')?.value||''}));
+      return data;
+    }
+    function sauvegarderDonnees(){ localStorage.setItem(LS_KEY, JSON.stringify(collectFormData())); toast('Projet sauvegardé'); }
+    function chargerDonnees(){
+      const s=localStorage.getItem(LS_KEY); if(!s) return;
+      try{ const d=JSON.parse(s);
+        ['projet','responsable','dateDebut','dateFin','priorite','descriptif','objectif','prochaine','commentaires'].forEach(k=>{const el=g(k); if(el) el.value=d[k]||''});
+        if(Array.isArray(d.activites)&&d.activites.length){document.querySelector('#table-activites tbody').innerHTML=''; d.activites.forEach(addActivityRow);}
+        if(Array.isArray(d.risques)&&d.risques.length){document.querySelector('#table-risques tbody').innerHTML=''; d.risques.forEach(addRiskRow);}
+        computeKPIs(); toast('Données chargées');
+      }catch(e){console.warn('Erreur chargement :',e)}
+    }
+    function effacerFormulaire(){ if(!confirm('Effacer toutes les données ?')) return;
+      localStorage.removeItem(LS_KEY); g('ficheProjet').reset();
+      document.querySelector('#table-activites tbody').innerHTML=''; addActivityRow();
+      document.querySelector('#table-risques tbody').innerHTML=''; addRiskRow();
+      computeKPIs(); toast('Formulaire réinitialisé');
+    }
+
+    /* Validation */
+    function validateRequiredFields(){
+      const ids=['projet','descriptif','objectif'], missing=[];
+      ids.forEach(id=>{const el=g(id); if(!el.value || !String(el.value).trim()){missing.push(el.previousElementSibling?.textContent?.replace('*','').trim()||id)}});
+      const banner=g('validationBanner'), span=g('validationMissing');
+      if(missing.length){banner.style.display='block'; span.textContent=missing.join(', ')} else {banner.style.display='none'; span.textContent=''}
+      return missing.length===0;
+    }
+
+    /* Export PDF */
+    function escapeHtml(s){ if(s==null) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;'); }
+
+    async function exporterPDF(){
+      if(!validateRequiredFields()){ toast('Veuillez renseigner les champs requis',true,3000); return; }
+      const nomProjet=val('projet')||'Sans titre', pdfName=`Fiche Projet - ${nomProjet}.pdf`;
+
+      const src=g('form-container');
+      const clone=src.cloneNode(true);
+
+      // Retirer la toolbar du clone
+      clone.querySelectorAll('.no-print, .toolbar').forEach(el=>el.remove());
+
+      // Remplacer inputs/select/textarea par du texte justifié multi-ligne
+      clone.querySelectorAll('input, select, textarea').forEach(el=>{
+        const block=document.createElement(el.tagName==='TEXTAREA'?'div':'span');
+        block.className='print-field'+(el.tagName==='TEXTAREA'?' multiline':'');
+        let val=''; if(el.tagName==='SELECT'){ val=(el.selectedOptions&&el.selectedOptions[0])?el.selectedOptions[0].text:(el.value||''); } else { val=el.value||''; }
+        block.textContent=val;
+        const wrapper=el.closest('.field')||el.parentElement; if(wrapper) wrapper.classList.add('avoid-break');
+        el.replaceWith(block);
+      });
+
+      clone.style.maxWidth='794px'; clone.style.width='794px'; clone.style.margin='0 auto'; clone.style.boxShadow='none'; clone.style.borderRadius='0';
+
+      const holder=g('pdf-container'); holder.innerHTML=''; holder.appendChild(clone);
+      holder.style.position='fixed'; holder.style.left='-10000px'; holder.style.top='0';
+
+      const opt={
+        margin:[0,0,0,0],
+        filename:pdfName,
+        image:{type:'jpeg',quality:0.98},
+        html2canvas:{scale:2,useCORS:true,logging:false,scrollY:0,backgroundColor:'#ffffff'},
+        jsPDF:{unit:'pt',format:'a4',orientation:'portrait'},
+        pagebreak:{mode:['css','legacy'],avoid:['.avoid-break']}
       };
-      
-      // Récupérer les activités
-      document.querySelectorAll('#table-activites tbody tr').forEach(row => {
-        formData.activites.push({
-          activite: row.querySelector('.activite-input').value,
-          statut: row.querySelector('.statut-select').value,
-          avancement: row.querySelector('.avancement-input').value,
-          comment: row.querySelector('.comment-input').value
+
+      toast(`Génération du PDF « ${pdfName} »…`);
+
+      try{
+        const worker=html2pdf().set(opt).from(clone).toPdf();
+        await worker.get('pdf').then(pdf=>{
+          const total=pdf.internal.getNumberOfPages();
+          const pageW=pdf.internal.pageSize.getWidth(), pageH=pdf.internal.pageSize.getHeight();
+          for(let i=1;i<=total;i++){
+            pdf.setPage(i);
+            if(i>=2){ pdf.setDrawColor(210); pdf.setLineWidth(0.3); pdf.line(36,36,pageW-36,36); }
+            pdf.setFont('helvetica','normal'); pdf.setFontSize(10); pdf.setTextColor(120);
+            pdf.text(`Page ${i} / ${total}`, pageW/2, pageH-14, {align:'center'});
+          }
+          pdf.save(pdfName);
         });
-      });
-      
-      // Récupérer les risques
-      document.querySelectorAll('#table-risques tbody tr').forEach(row => {
-        formData.risques.push({
-          risque: row.querySelector('.risque-input').value,
-          impact: row.querySelector('.impact-select').value,
-          mesure: row.querySelector('.mesure-input').value
-        });
-      });
-      
-      localStorage.setItem('ficheProjet', JSON.stringify(formData));
-    }
-    
-    // Charger les données depuis le localStorage
-    function chargerDonnees() {
-      const savedData = localStorage.getItem('ficheProjet');
-      if (savedData) {
-        const formData = JSON.parse(savedData);
-        
-        // Remplir les champs de base
-        document.getElementById('projet').value = formData.projet || '';
-        document.getElementById('objectif').value = formData.objectif || '';
-        document.getElementById('prochaine').value = formData.prochaine || '';
-        document.getElementById('commentaires').value = formData.commentaires || '';
-        
-        // Charger les activités
-        if (formData.activites && formData.activites.length > 0) {
-          // Supprimer les lignes existantes
-          document.querySelector('#table-activites tbody').innerHTML = '';
-          
-          formData.activites.forEach((activite, index) => {
-            addActivityRow();
-            
-            const rows = document.querySelectorAll('#table-activites tbody tr');
-            const currentRow = rows[rows.length - 1];
-            
-            currentRow.querySelector('.activite-input').value = activite.activite || '';
-            currentRow.querySelector('.statut-select').value = activite.statut || '';
-            currentRow.querySelector('.avancement-input').value = activite.avancement || '';
-            currentRow.querySelector('.comment-input').value = activite.comment || '';
-            
-            // Mettre à jour la barre de progression
-            if (activite.avancement) {
-              updateProgressBar(currentRow.querySelector('.avancement-input'));
-            }
-          });
-        }
-        
-        // Charger les risques
-        if (formData.risques && formData.risques.length > 0) {
-          // Supprimer les lignes existantes
-          document.querySelector('#table-risques tbody').innerHTML = '';
-          
-          formData.risques.forEach((risque, index) => {
-            addRiskRow();
-            
-            const rows = document.querySelectorAll('#table-risques tbody tr');
-            const currentRow = rows[rows.length - 1];
-            
-            currentRow.querySelector('.risque-input').value = risque.risque || '';
-            currentRow.querySelector('.impact-select').value = risque.impact || '';
-            currentRow.querySelector('.mesure-input').value = risque.mesure || '';
-          });
-        }
-        
-        afficherNotification('Données chargées depuis la sauvegarde');
-      }
-    }
-    
-    // Sauvegarder le formulaire
-    function sauvegarder() {
-      sauvegarderDonnees();
-      afficherNotification('Projet sauvegardé avec succès !');
-    }
-    
-    // Effacer le formulaire
-    function effacerFormulaire() {
-      if (confirm('Êtes-vous sûr de vouloir effacer toutes les données ?')) {
-        localStorage.removeItem('ficheProjet');
-        document.getElementById('ficheProjet').reset();
-        
-        // Réinitialiser les tableaux avec une ligne par défaut
-        document.querySelector('#table-activites tbody').innerHTML = `
-          <tr>
-            <td><input type="text" name="activite[]" class="activite-input" required></td>
-            <td>
-              <select name="statut[]" class="statut-select" required>
-                <option value="">Sélectionner</option>
-                <option>Non commencé</option>
-                <option>En cours</option>
-                <option>Terminé</option>
-              </select>
-            </td>
-            <td>
-              <input type="number" name="avancement[]" class="avancement-input" min="0" max="100" required oninput="updateProgressBar(this)">
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: 0%"></div>
-              </div>
-            </td>
-            <td><input type="text" name="comment[]" class="comment-input"></td>
-            <td class="action-buttons">
-              <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
-            </td>
-          </tr>
-        `;
-        
-        document.querySelector('#table-risques tbody').innerHTML = `
-          <tr>
-            <td><input type="text" name="risque[]" class="risque-input"></td>
-            <td>
-              <select name="impact[]" class="impact-select">
-                <option value="">Sélectionner</option>
-                <option>Mineur</option>
-                <option>Majeur</option>
-                <option>Critique</option>
-              </select>
-            </td>
-            <td><input type="text" name="mesure[]" class="mesure-input"></td>
-            <td class="action-buttons">
-              <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
-            </td>
-          </tr>
-        `;
-        
-        // Réattacher les écouteurs d'événements
-        document.querySelectorAll('input, textarea, select').forEach(element => {
-          element.addEventListener('change', sauvegarderDonnees);
-        });
-        
-        afficherNotification('Formulaire effacé');
+        toast(`✅ PDF « ${pdfName} » téléchargé`);
+      }catch(err){
+        console.error('Erreur génération PDF :',err); toast('Erreur lors de la génération du PDF',true,4500);
+      }finally{
+        holder.innerHTML='';
       }
     }
 
-    // Préparer le HTML pour le PDF avec gestion multi-pages
-    function preparerHTMLPourPDF() {
-      const pdfContainer = document.getElementById('pdf-container');
-      pdfContainer.innerHTML = '';
-      
-      // Créer une version imprimable du formulaire
-      const formulaireClone = document.getElementById('form-container').cloneNode(true);
-      
-      // Supprimer les boutons d'action
-      formulaireClone.querySelector('.form-actions').remove();
-      
-      // Supprimer les boutons de suppression des lignes
-      formulaireClone.querySelectorAll('.action-buttons').forEach(el => el.remove());
-      
-      // Supprimer la classe no-print pour afficher tous les éléments
-      formulaireClone.querySelectorAll('.no-print').forEach(el => el.classList.remove('no-print'));
-      
-      // Remplacer les champs de saisie par leur valeur
-      formulaireClone.querySelectorAll('input, textarea, select').forEach(element => {
-        const valeur = element.value;
-        const span = document.createElement('span');
-        span.textContent = valeur;
-        span.style.display = 'block';
-        span.style.padding = '5px 0';
-        span.style.fontSize = '12pt';
-        element.parentNode.replaceChild(span, element);
+    /* Init */
+    function init(){
+      if(document.querySelectorAll('#table-activites tbody tr').length===0) addActivityRow();
+      if(document.querySelectorAll('#table-risques tbody tr').length===0) addRiskRow();
+      chargerDonnees();
+      document.querySelectorAll('#ficheProjet input, #ficheProjet textarea, #ficheProjet select').forEach(el=>{
+        el.addEventListener('change',autoSaveThrottle); el.addEventListener('input',autoSaveThrottle);
       });
-      
-      // Remplacer les barres de progression par une représentation visuelle
-      formulaireClone.querySelectorAll('.progress-bar').forEach(progressBar => {
-        const valeur = progressBar.parentNode.querySelector('input')?.value || '0';
-        const pourcentage = parseInt(valeur);
-        const barreVisual = document.createElement('div');
-        barreVisual.style.width = '100%';
-        barreVisual.style.height = '20px';
-        barreVisual.style.backgroundColor = '#f0f0f0';
-        barreVisual.style.borderRadius = '10px';
-        barreVisual.style.marginTop = '5px';
-        barreVisual.style.position = 'relative';
-        
-        const barreRemplissage = document.createElement('div');
-        barreRemplissage.style.width = `${pourcentage}%`;
-        barreRemplissage.style.height = '100%';
-        barreRemplissage.style.borderRadius = '10px';
-        
-        if (pourcentage < 30) {
-          barreRemplissage.style.backgroundColor = '#e74c3c';
-        } else if (pourcentage < 70) {
-          barreRemplissage.style.backgroundColor = '#f39c12';
-        } else {
-          barreRemplissage.style.backgroundColor = '#2ecc71';
-        }
-        
-        const textePourcentage = document.createElement('div');
-        textePourcentage.textContent = `${pourcentage}%`;
-        textePourcentage.style.position = 'absolute';
-        textePourcentage.style.top = '0';
-        textePourcentage.style.left = '0';
-        textePourcentage.style.width = '100%';
-        textePourcentage.style.textAlign = 'center';
-        textePourcentage.style.lineHeight = '20px';
-        textePourcentage.style.color = pourcentage > 50 ? 'white' : 'black';
-        textePourcentage.style.fontWeight = 'bold';
-        textePourcentage.style.fontSize = '10pt';
-        
-        barreVisual.appendChild(barreRemplissage);
-        barreVisual.appendChild(textePourcentage);
-        progressBar.parentNode.replaceChild(barreVisual, progressBar);
-      });
-      
-      // Ajouter des en-têtes et pieds de page pour chaque page
-      const header = document.createElement('div');
-      header.className = 'page-header';
-      header.innerHTML = `
-        <div style="text-align: center; padding: 10px; border-bottom: 1px solid #ddd; margin-bottom: 15px;">
-          <strong>Fiche Projet - CFED Mauritanie</strong>
-        </div>
-      `;
-      
-      const footer = document.createElement('div');
-      footer.className = 'page-footer';
-      footer.innerHTML = `
-        <div style="text-align: center;">
-          Page <span class="pageNumber"></span> sur <span class="totalPages"></span>
-        </div>
-      `;
-      
-      pdfContainer.appendChild(header);
-      pdfContainer.appendChild(footer);
-      pdfContainer.appendChild(formulaireClone);
-      
-      return pdfContainer;
+      document.querySelectorAll('.avancement-input').forEach(updateProgressBar);
+      computeKPIs();
     }
-    
-    // Exporter en PDF avec gestion multi-pages
-    function exporterPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF('p', 'mm', 'a4');
-      
-      // Préparer le contenu pour le PDF
-      const pdfContainer = preparerHTMLPourPDF();
-      
-      // Temporairement afficher le conteneur PDF pour le rendu
-      const originalStyles = pdfContainer.getAttribute('style');
-      pdfContainer.style.position = 'fixed';
-      pdfContainer.style.left = '50%';
-      pdfContainer.style.top = '50%';
-      pdfContainer.style.transform = 'translate(-50%, -50%)';
-      pdfContainer.style.zIndex = '10000';
-      pdfContainer.style.width = '900px'; // Largeur fixe pour le rendu
-      
-      // Options pour html2canvas
-      const options = {
-        scale: 2, // Augmenter la résolution
-        useCORS: true,
-        allowTaint: true,
-        logging: false
-      };
-      
-      // Afficher un message de chargement
-      afficherNotification('Génération du PDF en cours...');
-      
-      // Capturer le contenu avec html2canvas
-      html2canvas(pdfContainer, options).then(canvas => {
-        // Restaurer les styles originaux
-        pdfContainer.setAttribute('style', originalStyles);
-        
-        const imgData = canvas.toDataURL('image/jpeg', 1.0);
-        const imgWidth = 210; // A4 width in mm
-        const imgHeight = canvas.height * imgWidth / canvas.width;
-        
-        // Calculer le nombre de pages nécessaires
-        const pageHeight = 297; // Hauteur A4 en mm
-        let heightLeft = imgHeight;
-        let position = 0;
-        
-        // Ajouter la première page
-        doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-        
-        // Ajouter des pages supplémentaires si nécessaire
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight;
-          doc.addPage();
-          doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-          heightLeft -= pageHeight;
-        }
-        
-        // Sauvegarder le PDF
-        const nomProjet = document.getElementById('projet').value || 'Sans titre';
-        doc.save(`Fiche Projet - ${nomProjet}.pdf`);
-        
-        // Nettoyer le conteneur PDF
-        pdfContainer.innerHTML = '';
-        
-        afficherNotification('PDF exporté avec succès !');
-      }).catch(error => {
-        console.error('Erreur lors de la génération du PDF:', error);
-        afficherNotification('Erreur lors de la génération du PDF', true);
-        // Restaurer les styles originaux en cas d'erreur
-        pdfContainer.setAttribute('style', originalStyles);
-      });
-    }
+    document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
