@@ -14,82 +14,510 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
-    :root{
-      --primary:#27ae60;--primary-dark:#219653;--secondary:#c0392b;--accent:#f39c12;--info:#2980b9;
-      --light:#f7f9fc;--dark:#34495e;--muted:#6b7280;--success:#2ecc71;--warning:#f39c12;--danger:#e74c3c;
-      --gray:#ecf0f1;--border:#e5e7eb;--soft-shadow:0 10px 16px rgba(0,0,0,.06);
-      --font-size-xs:12px;--font-size-sm:13px;--font-size-base:15px;--font-size-md:16px;--font-size-lg:18px;--font-size-xl:22px;--font-size-2xl:26px;
-      --line-height:1.6;--radius:12px;--radius-sm:8px;--radius-lg:18px;--container-w:1080px;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
-      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,Liberation Sans,sans-serif;
-      background:var(--light);color:var(--dark);font-size:var(--font-size-base);line-height:var(--line-height);
-      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;
-      padding:24px;
-    }
-    .container{width:100%;max-width:var(--container-w);margin:0 auto;background:#fff;border-radius:var(--radius);box-shadow:var(--soft-shadow);overflow:hidden;position:relative}
-    .header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:#fff;padding:28px 24px 26px;text-align:center;position:relative;isolation:isolate}
-    .header::after{content:'';position:absolute;inset:0;background:
-      radial-gradient(1200px 400px at 10% 0%,rgba(255,255,255,.08),transparent 50%),
-      radial-gradient(1000px 480px at 90% 0%,rgba(255,255,255,.06),transparent 55%);
-      pointer-events:none;z-index:-1}
-    .header-flex{display:grid;grid-template-columns:120px 1fr 160px;gap:16px;align-items:center;justify-content:center}
-    .logo-wrap{display:flex;align-items:center;justify-content:center}
-    .logo{width:96px;height:96px;border-radius:999px;overflow:hidden;background:#fff;border:4px solid rgba(255,255,255,.35);box-shadow:0 10px 18px rgba(0,0,0,.12)}
-    .logo img{width:100%;height:100%;object-fit:cover;display:block}
-    .header h1{font-size:24px;font-weight:700;letter-spacing:.2px}
-    .header h2{font-size:16px;font-weight:500;opacity:.95;margin-top:4px}
-    .badge{display:inline-flex;gap:8px;align-items:center;justify-content:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;padding:8px 12px;border-radius:999px;margin-top:10px;font-size:12px;font-weight:500}
-    .title-bar{background:var(--gray);color:var(--secondary);padding:16px;text-align:center;font-weight:700;font-size:var(--font-size-xl);border-bottom:1px solid var(--border)}
-    form#ficheProjet{padding:24px}
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
-    .section{margin-bottom:28px;padding-bottom:18px;border-bottom:1px dashed var(--border);page-break-inside:avoid}
-    .section-title{font-size:var(--font-size-lg);color:var(--primary);border-bottom:2px solid var(--primary);padding-bottom:8px;margin-bottom:14px;display:flex;gap:10px;align-items:center}
-    .field{margin-bottom:14px}
-    .field label{display:block;font-weight:600;color:var(--secondary);margin-bottom:6px}
-    .field input[type=text],.field input[type=number],.field input[type=date],.field input[type=email],.field textarea,.field select{
-      width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:8px;font-size:var(--font-size-md);transition:box-shadow .2s,border-color .2s;background:#fff}
-    .field textarea{min-height:96px;resize:vertical}
-    .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(39,174,96,.18)}
-    .table-wrap{width:100%;overflow-x:auto}
-    table{width:100%;border-collapse:collapse;margin-top:10px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-    thead th{background:var(--primary);color:#fff;text-align:left;font-weight:600;padding:12px 14px;position:sticky;top:0}
-    tbody td{border-bottom:1px solid var(--border);padding:10px 14px;vertical-align:top}
-    tbody tr:nth-child(even){background:#fafafa}
-    .actions{display:flex;gap:8px}
-    .btn{appearance:none;border:0;cursor:pointer;padding:10px 14px;border-radius:8px;font-weight:600;font-size:14px;transition:transform .12s,box-shadow .12s,background .2s;display:inline-flex;align-items:center;gap:8px}
-    .btn-sm{padding:6px 10px;font-size:12px;border-radius:6px}
-    .btn:active{transform:translateY(1px)}
-    .btn-primary{background:var(--primary);color:#fff}.btn-danger{background:var(--secondary);color:#fff}
-    .btn-success{background:var(--success);color:#fff}.btn-warning{background:var(--warning);color:#fff}
-    .btn-ghost{background:transparent;color:var(--dark);border:1px dashed var(--border)}
-    .progress{height:8px;background:#eef2f7;border-radius:999px;overflow:hidden;margin-top:6px}.progress .bar{height:100%;width:0%;background:var(--success);transition:width .35s}
-    .chips{display:flex;gap:6px;flex-wrap:wrap}.chip{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;padding:6px 10px;border-radius:999px;font-size:12px}
-    .toolbar{display:flex;gap:10px;justify-content:flex-end;align-items:center;padding-top:10px;border-top:1px solid var(--border);margin-top:18px}
-    .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:10px}
-    .kpi{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;box-shadow:0 4px 10px rgba(0,0,0,.03);display:grid;gap:2px;align-content:center}
-    .kpi .kpi-label{font-size:12px;color:#64748b}.kpi .kpi-value{font-size:20px;font-weight:700;color:var(--dark)}
-    .toast{position:fixed;bottom:22px;right:22px;background:var(--success);color:#fff;padding:14px 16px;border-radius:10px;box-shadow:0 10px 20px rgba(0,0,0,.1);opacity:0;pointer-events:none;transform:translateY(10px);transition:all .25s;z-index:10000}
-    .toast.show{opacity:1;transform:translateY(0);pointer-events:all}.toast.error{background:var(--secondary)}
-    @media print{body{background:#fff;padding:0}.container{max-width:100%;border-radius:0;box-shadow:none}.toolbar{display:none!important}thead th{position:static}}
-    .hidden{display:none!important}
-    .warning-banner{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;padding:10px 12px;border-radius:8px;display:none}
-    .avoid-break{break-inside:avoid;page-break-inside:avoid}
+    /* === VARIABLES CSS === */
+    :root {
+      /* Palette logo (ajustez si besoin) */
+      --green:  #27ae60;   /* Vert */
+      --red:    #c0392b;   /* Rouge */
+      --yellow: #f1c40f;   /* Jaune */
 
-    /* Rendu PDF des zones longues : multi-ligne + justifié + césures FR */
-    .print-field{display:block;width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;font:inherit;color:inherit}
-    .print-field.multiline{
-      white-space:pre-wrap;
-      line-height:var(--line-height);
-      text-align:justify;
-      hyphens:auto;
-      overflow-wrap:anywhere;
+      /* Mapping du thème */
+      --primary:       var(--green);
+      --primary-dark:  #1f8e50;   /* dérivé du vert pour dégradés */
+      --secondary:     var(--red);
+      --accent:        var(--yellow);
+
+      /* États sémantiques */
+      --success: var(--green);
+      --warning: var(--yellow);
+      --danger:  var(--red);
+
+      /* Autres couleurs inchangées */
+      --info:#2980b9;
+      --light:#f7f9fc;
+      --dark:#34495e;
+      --muted:#6b7280;
+      --gray:#ecf0f1;
+      --border:#e5e7eb;
+      --soft-shadow:0 10px 16px rgba(0,0,0,.06);
+
+      /* Typo & layout */
+      --font-size-xs:12px;
+      --font-size-sm:13px;
+      --font-size-base:15px;
+      --font-size-md:16px;
+      --font-size-lg:18px;
+      --font-size-xl:22px;
+      --font-size-2xl:26px;
+      --line-height:1.6;
+      --radius:12px;
+      --radius-sm:8px;
+      --radius-lg:18px;
+      --container-w:1080px;
     }
-    /* Justifier aussi à l’écran pour ces 4 zones */
-    .justify-text{ text-align: justify; }
+
+    /* === RÉINITIALISATION ET STYLES DE BASE === */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, Liberation Sans, sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      font-size: var(--font-size-base);
+      line-height: var(--line-height);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      padding: 24px;
+    }
+
+    /* === LAYOUT PRINCIPAL === */
+    .container {
+      width: 100%;
+      max-width: var(--container-w);
+      margin: 0 auto;
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--soft-shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* === EN-TÊTE === */
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      padding: 28px 24px 26px;
+      text-align: center;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1200px 400px at 10% 0%, rgba(255,255,255,.08), transparent 50%),
+        radial-gradient(1000px 480px at 90% 0%, rgba(255,255,255,.06), transparent 55%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .header-flex {
+      display: grid;
+      grid-template-columns: 120px 1fr 160px;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo {
+      width: 96px;
+      height: 96px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #fff;
+      border: 4px solid rgba(255,255,255,.35);
+      box-shadow: 0 10px 18px rgba(0,0,0,.12);
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+
+    .header h2 {
+      font-size: 16px;
+      font-weight: 500;
+      opacity: .95;
+      margin-top: 4px;
+    }
+
+    .badge {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.28);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 999px;
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* === BARRE DE TITRE === */
+    .title-bar {
+      background: var(--gray);
+      color: var(--secondary);
+      padding: 16px;
+      text-align: center;
+      font-weight: 700;
+      font-size: var(--font-size-xl);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* === FORMULAIRE === */
+    form#ficheProjet {
+      padding: 24px;
+    }
+
+    /* === GRID LAYOUTS === */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* === SECTIONS === */
+    .section {
+      margin-bottom: 28px;
+      padding-bottom: 18px;
+      border-bottom: 1px dashed var(--border);
+      page-break-inside: avoid;
+    }
+
+    .section-title {
+      font-size: var(--font-size-lg);
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* === CHAMPS DE FORMULAIRE === */
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-weight: 600;
+      color: var(--secondary);
+      margin-bottom: 6px;
+    }
+
+    .field input[type=text],
+    .field input[type=number],
+    .field input[type=date],
+    .field input[type=email],
+    .field textarea,
+    .field select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: var(--font-size-md);
+      transition: box-shadow .2s, border-color .2s;
+      background: #fff;
+    }
+
+    .field textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(39,174,96,.18);
+    }
+
+    /* === TABLEAUX === */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+
+    thead th {
+      background: var(--primary);
+      color: #fff;
+      text-align: left;
+      font-weight: 600;
+      padding: 12px 14px;
+      position: sticky;
+      top: 0;
+    }
+
+    tbody td {
+      border-bottom: 1px solid var(--border);
+      padding: 10px 14px;
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    /* === BOUTONS ET ACTIONS === */
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform .12s, box-shadow .12s, background .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 6px;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-danger {
+      background: var(--secondary);
+      color: #fff;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: #fff;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--dark);
+      border: 1px dashed var(--border);
+    }
+
+    /* === BARRE DE PROGRESSION === */
+    .progress {
+      height: 8px;
+      background: #eef2f7;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .progress .bar {
+      height: 100%;
+      width: 0%;
+      background: var(--success);
+      transition: width .35s;
+    }
+
+    /* === CHIPS === */
+    .chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    /* === BARRE D'OUTILS === */
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      align-items: center;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+      margin-top: 18px;
+    }
+
+    /* === KPI === */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .kpi {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,.03);
+      display: grid;
+      gap: 2px;
+      align-content: center;
+    }
+
+    .kpi .kpi-label {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .kpi .kpi-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    /* === TOAST === */
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: var(--success);
+      color: #fff;
+      padding: 14px 16px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,.1);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: all .25s;
+      z-index: 10000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    .toast.error {
+      background: var(--secondary);
+    }
+
+    /* === IMPRESSION === */
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+      
+      .container {
+        max-width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      
+      .toolbar {
+        display: none !important;
+      }
+      
+      thead th {
+        position: static;
+      }
+      
+      .pdf-hide {
+        display: none !important;
+      }
+    }
+
+    /* === CLASSES UTILITAIRES === */
+    .hidden {
+      display: none !important;
+    }
+
+    .warning-banner {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #9a3412;
+      padding: 10px 12px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .avoid-break {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* === RENDU PDF === */
+    .print-field {
+      display: block;
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      font: inherit;
+      color: inherit;
+    }
+
+    .print-field.multiline {
+      white-space: pre-wrap;
+      line-height: var(--line-height);
+      text-align: justify;
+      hyphens: auto;
+      overflow-wrap: anywhere;
+    }
+
+    /* Justifier aussi à l'écran pour ces 4 zones */
+    .justify-text {
+      text-align: justify;
+    }
   </style>
 </head>
 
@@ -118,6 +546,7 @@
         <strong>Champs requis manquants :</strong> <span id="validationMissing"></span>
       </div>
 
+      <!-- SECTION INFORMATIONS GÉNÉRALES -->
       <section class="section" id="section-meta">
         <div class="section-title"><i class="fa-solid fa-id-card-clip"></i> Informations générales</div>
         <div class="grid-2">
@@ -133,11 +562,20 @@
         <div class="grid-3">
           <div class="field"><label for="dateDebut">Date de début</label><input type="date" id="dateDebut" name="dateDebut"></div>
           <div class="field"><label for="dateFin">Date de fin (prévue)</label><input type="date" id="dateFin" name="dateFin"></div>
+
+          <!-- Priorité MASQUÉE dans le PDF uniquement -->
           <div class="field">
             <label for="priorite">Priorité</label>
-            <select id="priorite" name="priorite"><option value="">Sélectionner</option><option>Faible</option><option>Moyenne</option><option>Haute</option><option>Critique</option></select>
+            <select id="priorite" name="priorite">
+              <option value="">Sélectionner</option>
+              <option>Faible</option>
+              <option>Moyenne</option>
+              <option>Haute</option>
+              <option>Critique</option>
+            </select>
           </div>
         </div>
+
         <div class="field">
           <label for="descriptif">Descriptif <span class="text-danger">*</span></label>
           <textarea class="justify-text" id="descriptif" name="descriptif" required placeholder="Brève description du projet, contexte et portée..."></textarea>
@@ -148,6 +586,7 @@
         </div>
       </section>
 
+      <!-- SECTION AVANCEMENT -->
       <section class="section" id="section-avancement">
         <div class="section-title"><i class="fa-solid fa-tasks"></i> État d'avancement global</div>
         <div class="table-wrap">
@@ -158,7 +597,7 @@
                 <th style="width:14%">Statut</th>
                 <th style="width:16%">Avancement (%)</th>
                 <th style="width:32%">Commentaires</th>
-                <th style="width:10%">Actions</th>
+                <th class="actions-col" style="width:10%">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -166,7 +605,11 @@
                 <td><input type="text" name="activite[]" class="activite-input" value="Développement de la plateforme e-learning" placeholder="Saisir l'activité"></td>
                 <td>
                   <select name="statut[]" class="statut-select">
-                    <option value="">Sélectionner</option><option selected>En cours</option><option>Non commencé</option><option>Terminé</option><option>En pause</option>
+                    <option value="">Sélectionner</option>
+                    <option selected>En cours</option>
+                    <option>Non commencé</option>
+                    <option>Terminé</option>
+                    <option>En pause</option>
                   </select>
                 </td>
                 <td>
@@ -174,7 +617,11 @@
                   <div class="progress"><div class="bar" style="width:65%"></div></div>
                 </td>
                 <td><input type="text" name="comment[]" class="comment-input" value="Intégration des modules en cours" placeholder="Notes, obstacles, dépendances..."></td>
-                <td class="actions"><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)" title="Supprimer la ligne"><i class="fa-solid fa-trash"></i></button></td>
+                <td class="actions">
+                  <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)" title="Supprimer la ligne">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -195,26 +642,42 @@
         </div>
       </section>
 
+      <!-- SECTION PROCHAINE ÉTAPE -->
       <section class="section" id="section-next">
         <div class="section-title"><i class="fa-solid fa-person-running"></i> Prochaine étape clé</div>
         <div class="field"><textarea class="justify-text" id="prochaine" name="prochaine" rows="3" placeholder="Par ex. revue de sprint, atelier, jalon…"></textarea></div>
       </section>
 
+      <!-- SECTION RISQUES -->
       <section class="section" id="section-risques">
         <div class="section-title"><i class="fa-solid fa-triangle-exclamation"></i> Risques ou blocages identifiés</div>
         <div class="table-wrap">
           <table id="table-risques">
             <thead>
-              <tr><th style="width:30%">Description</th><th style="width:22%">Impact</th><th style="width:38%">Mesures</th><th style="width:10%">Actions</th></tr>
+              <tr>
+                <th style="width:30%">Description</th>
+                <th style="width:22%">Impact</th>
+                <th style="width:38%">Mesures</th>
+                <th class="actions-col" style="width:10%">Actions</th>
+              </tr>
             </thead>
             <tbody>
               <tr>
                 <td><input type="text" name="risque[]" class="risque-input" value="Retard livraison des contenus pédagogiques" placeholder="Décrire le risque…"></td>
                 <td>
-                  <select name="impact[]" class="impact-select"><option value="">Sélectionner</option><option>Mineur</option><option selected>Majeur</option><option>Critique</option></select>
+                  <select name="impact[]" class="impact-select">
+                    <option value="">Sélectionner</option>
+                    <option>Mineur</option>
+                    <option selected>Majeur</option>
+                    <option>Critique</option>
+                  </select>
                 </td>
                 <td><input type="text" name="mesure[]" class="mesure-input" value="Établir un calendrier contraignant avec les formateurs" placeholder="Mesures d'atténuation…"></td>
-                <td class="actions"><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fa-solid fa-trash"></i></button></td>
+                <td class="actions">
+                  <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)" title="Supprimer la ligne">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -229,11 +692,13 @@
         </div>
       </section>
 
+      <!-- SECTION COMMENTAIRES -->
       <section class="section" id="section-comments">
         <div class="section-title"><i class="fa-solid fa-comment-dots"></i> Commentaires / Recommandations</div>
         <div class="field"><textarea class="justify-text" id="commentaires" name="commentaires" rows="3" placeholder="Observations générales, recommandations, décisions, besoins…"></textarea></div>
       </section>
 
+      <!-- BARRE D'OUTILS PRINCIPALE -->
       <div class="toolbar no-print" aria-label="Commandes">
         <button type="button" class="btn btn-ghost" onclick="sauvegarderDonnees()"><i class="fa-solid fa-save"></i> Sauvegarder</button>
         <button type="button" class="btn btn-ghost" onclick="effacerFormulaire()"><i class="fa-solid fa-trash-can"></i> Effacer</button>
@@ -246,215 +711,447 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    /* Toast */
-    function toast(msg, isError=false, timeout=2500){
-      const el=document.getElementById('toast'); el.textContent=msg;
-      el.className='toast'+(isError?' error':''); el.classList.add('show');
-      clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'), timeout);
-    }
-    const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
-    const fmtPercent=n=>isNaN(n)||n===''||n===null?'—':`${Math.round(n)}%`;
+    // ===== FONCTIONS UTILITAIRES =====
+    function g(id) { return document.getElementById(id); }
+    function val(id) { return g(id)?.value || ''; }
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+    const fmtPercent = n => isNaN(n) || n === '' || n === null ? '—' : `${Math.round(n)}%`;
 
-    /* Progress */
-    function updateProgressBar(input){
-      const v=clamp(Number(input.value||0),0,100); input.value=String(v);
-      const bar=input.parentElement.querySelector('.bar'); if(bar){bar.style.width=v+'%';bar.style.background=v<30?'#e74c3c':(v<70?'#f39c12':'#2ecc71')}
-      computeKPIs(); autoSaveThrottle();
+    // ===== GESTION DES TOAST =====
+    function toast(msg, isError = false, timeout = 2500) {
+      const el = g('toast');
+      el.textContent = msg;
+      el.className = 'toast' + (isError ? ' error' : '');
+      el.classList.add('show');
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove('show'), timeout);
     }
 
-    /* Tables */
-    function addActivityRow(initial={activite:'',statut:'',avancement:'',comment:''}){
-      const tbody=document.querySelector('#table-activites tbody'); const tr=document.createElement('tr');
-      tr.innerHTML=`
+    // ===== GESTION DE LA BARRE DE PROGRESSION =====
+    function updateProgressBar(input) {
+      const v = clamp(Number(input.value || 0), 0, 100);
+      input.value = String(v);
+      const bar = input.parentElement.querySelector('.bar');
+      if (bar) {
+        bar.style.width = v + '%';
+        bar.style.background = v < 30 ? '#e74c3c' : (v < 70 ? '#f39c12' : '#2ecc71');
+      }
+      computeKPIs();
+      autoSaveThrottle();
+    }
+
+    // ===== GESTION DES TABLEAUX =====
+    function addActivityRow(initial = { activite: '', statut: '', avancement: '', comment: '' }) {
+      const tbody = document.querySelector('#table-activites tbody');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
         <td><input type="text" name="activite[]" class="activite-input" value="${escapeHtml(initial.activite)}" placeholder="Saisir l'activité"></td>
         <td>
           <select name="statut[]" class="statut-select">
             <option value="">Sélectionner</option>
-            <option ${initial.statut==='Non commencé'?'selected':''}>Non commencé</option>
-            <option ${initial.statut==='En cours'?'selected':''}>En cours</option>
-            <option ${initial.statut==='Terminé'?'selected':''}>Terminé</option>
-            <option ${initial.statut==='En pause'?'selected':''}>En pause</option>
+            <option ${initial.statut === 'Non commencé' ? 'selected' : ''}>Non commencé</option>
+            <option ${initial.statut === 'En cours' ? 'selected' : ''}>En cours</option>
+            <option ${initial.statut === 'Terminé' ? 'selected' : ''}>Terminé</option>
+            <option ${initial.statut === 'En pause' ? 'selected' : ''}>En pause</option>
           </select>
         </td>
         <td>
-          <input type="number" name="avancement[]" class="avancement-input" min="0" max="100" value="${initial.avancement!==''?Number(initial.avancement):''}" oninput="updateProgressBar(this)">
-          <div class="progress"><div class="bar" style="width:${Number(initial.avancement||0)}%"></div></div>
+          <input type="number" name="avancement[]" class="avancement-input" min="0" max="100" value="${initial.avancement !== '' ? Number(initial.avancement) : ''}" oninput="updateProgressBar(this)">
+          <div class="progress"><div class="bar" style="width:${Number(initial.avancement || 0)}%"></div></div>
         </td>
         <td><input type="text" name="comment[]" class="comment-input" value="${escapeHtml(initial.comment)}" placeholder="Notes, obstacles, dépendances..."></td>
-        <td class="actions"><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fa-solid fa-trash"></i></button></td>`;
-      tbody.appendChild(tr); attachRowListeners(tr); computeKPIs(); autoSaveThrottle(); return tr;
+        <td class="actions"><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)" title="Supprimer la ligne"><i class="fa-solid fa-trash"></i></button></td>`;
+      tbody.appendChild(tr);
+      attachRowListeners(tr);
+      computeKPIs();
+      autoSaveThrottle();
+      return tr;
     }
-    function addRiskRow(initial={risque:'',impact:'',mesure:''}){
-      const tbody=document.querySelector('#table-risques tbody'); const tr=document.createElement('tr');
-      tr.innerHTML=`
+
+    function addRiskRow(initial = { risque: '', impact: '', mesure: '' }) {
+      const tbody = document.querySelector('#table-risques tbody');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
         <td><input type="text" name="risque[]" class="risque-input" value="${escapeHtml(initial.risque)}" placeholder="Décrire le risque…"></td>
         <td>
           <select name="impact[]" class="impact-select">
             <option value="">Sélectionner</option>
-            <option ${initial.impact==='Mineur'?'selected':''}>Mineur</option>
-            <option ${initial.impact==='Majeur'?'selected':''}>Majeur</option>
-            <option ${initial.impact==='Critique'?'selected':''}>Critique</option>
+            <option ${initial.impact === 'Mineur' ? 'selected' : ''}>Mineur</option>
+            <option ${initial.impact === 'Majeur' ? 'selected' : ''}>Majeur</option>
+            <option ${initial.impact === 'Critique' ? 'selected' : ''}>Critique</option>
           </select>
         </td>
         <td><input type="text" name="mesure[]" class="mesure-input" value="${escapeHtml(initial.mesure)}" placeholder="Mesures d'atténuation…"></td>
         <td class="actions"><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fa-solid fa-trash"></i></button></td>`;
-      tbody.appendChild(tr); attachRowListeners(tr); autoSaveThrottle(); return tr;
+      tbody.appendChild(tr);
+      attachRowListeners(tr);
+      autoSaveThrottle();
+      return tr;
     }
-    function removeRow(btn){
-      const tr=btn.closest('tr'), table=tr.closest('table');
-      if(table.tBodies[0].rows.length>1){tr.remove(); if(table.id==='table-activites') computeKPIs(); autoSaveThrottle(); toast('Ligne supprimée')}
-      else toast('Vous ne pouvez pas supprimer la dernière ligne',true);
+
+    function removeRow(btn) {
+      const tr = btn.closest('tr');
+      const table = tr.closest('table');
+      if (table.tBodies[0].rows.length > 1) {
+        tr.remove();
+        if (table.id === 'table-activites') computeKPIs();
+        autoSaveThrottle();
+        toast('Ligne supprimée');
+      } else {
+        toast('Vous ne pouvez pas supprimer la dernière ligne', true);
+      }
     }
-    function clearEmptyActivityRows(){
-      const rows=[...document.querySelectorAll('#table-activites tbody tr')]; let removed=0;
-      rows.forEach(tr=>{const a=tr.querySelector('.activite-input')?.value?.trim(),s=tr.querySelector('.statut-select')?.value?.trim(),p=tr.querySelector('.avancement-input')?.value?.trim(),c=tr.querySelector('.comment-input')?.value?.trim();
-        if(!a&&!s&&!p&&!c && rows.length-removed>1){tr.remove();removed++}});
-      if(removed>0){computeKPIs();autoSaveThrottle();toast(`${removed} ligne(s) vide(s) supprimée(s)`)}
+
+    function clearEmptyActivityRows() {
+      const rows = [...document.querySelectorAll('#table-activites tbody tr')];
+      let removed = 0;
+      rows.forEach(tr => {
+        const a = tr.querySelector('.activite-input')?.value?.trim();
+        const s = tr.querySelector('.statut-select')?.value?.trim();
+        const p = tr.querySelector('.avancement-input')?.value?.trim();
+        const c = tr.querySelector('.comment-input')?.value?.trim();
+        if (!a && !s && !p && !c && rows.length - removed > 1) {
+          tr.remove();
+          removed++;
+        }
+      });
+      if (removed > 0) {
+        computeKPIs();
+        autoSaveThrottle();
+        toast(`${removed} ligne(s) vide(s) supprimée(s)`);
+      }
     }
-    function clearEmptyRiskRows(){
-      const rows=[...document.querySelectorAll('#table-risques tbody tr')]; let removed=0;
-      rows.forEach(tr=>{const r=tr.querySelector('.risque-input')?.value?.trim(),i=tr.querySelector('.impact-select')?.value?.trim(),m=tr.querySelector('.mesure-input')?.value?.trim();
-        if(!r&&!i&&!m && rows.length-removed>1){tr.remove();removed++}});
-      if(removed>0){autoSaveThrottle();toast(`${removed} ligne(s) vide(s) supprimée(s)`)}
+
+    function clearEmptyRiskRows() {
+      const rows = [...document.querySelectorAll('#table-risques tbody tr')];
+      let removed = 0;
+      rows.forEach(tr => {
+        const r = tr.querySelector('.risque-input')?.value?.trim();
+        const i = tr.querySelector('.impact-select')?.value?.trim();
+        const m = tr.querySelector('.mesure-input')?.value?.trim();
+        if (!r && !i && !m && rows.length - removed > 1) {
+          tr.remove();
+          removed++;
+        }
+      });
+      if (removed > 0) {
+        autoSaveThrottle();
+        toast(`${removed} ligne(s) vide(s) supprimée(s)`);
+      }
     }
-    function attachRowListeners(tr){
-      tr.querySelectorAll('input,select,textarea').forEach(el=>{
-        el.addEventListener('input',()=>{if(el.classList.contains('avancement-input')) updateProgressBar(el); autoSaveThrottle();});
-        el.addEventListener('change',autoSaveThrottle);
+
+    function attachRowListeners(tr) {
+      tr.querySelectorAll('input, select, textarea').forEach(el => {
+        el.addEventListener('input', () => {
+          if (el.classList.contains('avancement-input')) updateProgressBar(el);
+          autoSaveThrottle();
+        });
+        el.addEventListener('change', autoSaveThrottle);
       });
     }
-    function fillDemoActivities(){
-      const demo=[{activite:'Analyse des besoins et cadrage',statut:'Terminé',avancement:100,comment:'Rapport validé'},
-                  {activite:'Architecture technique & sécurité',statut:'En cours',avancement:75,comment:'Choix proxy & SSO'},
-                  {activite:'Développement modules e-learning',statut:'En cours',avancement:60,comment:'3/5 modules prêts'},
-                  {activite:'Formation des formateurs',statut:'Non commencé',avancement:0,comment:''}];
-      document.querySelector('#table-activites tbody').innerHTML=''; demo.forEach(addActivityRow); computeKPIs(); autoSaveThrottle(); toast('Lignes de démonstration ajoutées');
-    }
-    function fillDemoRisks(){
-      const demo=[{risque:'Sous-estimation de charge',impact:'Majeur',mesure:'Réallocation ressources / priorisation'},
-                  {risque:'Retards approbations budgétaires',impact:'Critique',mesure:'Plan B budgétaire et phasage'}];
-      document.querySelector('#table-risques tbody').innerHTML=''; demo.forEach(addRiskRow); autoSaveThrottle(); toast('Risques de démonstration ajoutés');
+
+    function fillDemoActivities() {
+      const demo = [
+        { activite: 'Analyse des besoins et cadrage', statut: 'Terminé', avancement: 100, comment: 'Rapport validé' },
+        { activite: 'Architecture technique & sécurité', statut: 'En cours', avancement: 75, comment: 'Choix proxy & SSO' },
+        { activite: 'Développement modules e-learning', statut: 'En cours', avancement: 60, comment: '3/5 modules prêts' },
+        { activite: 'Formation des formateurs', statut: 'Non commencé', avancement: 0, comment: '' }
+      ];
+      document.querySelector('#table-activites tbody').innerHTML = '';
+      demo.forEach(addActivityRow);
+      computeKPIs();
+      autoSaveThrottle();
+      toast('Lignes de démonstration ajoutées');
     }
 
-    /* KPIs */
-    function computeKPIs(){
-      const rows=[...document.querySelectorAll('#table-activites tbody tr')]; if(!rows.length) return;
-      let sum=0,count=0,done=0,prog=0;
-      rows.forEach(tr=>{const statut=tr.querySelector('.statut-select')?.value||'',av=Number(tr.querySelector('.avancement-input')?.value||0);
-        if(!isNaN(av)){sum+=av;count++} if(statut==='Terminé') done++; if(statut==='En cours') prog++;});
-      const avg=count?(sum/count):0; g('kpiAvg').textContent=isNaN(avg)?'—':`${Math.round(avg)}%`;
-      g('kpiInProgress').textContent=String(prog); g('kpiDone').textContent=String(done); g('kpiTotal').textContent=String(rows.length);
+    function fillDemoRisks() {
+      const demo = [
+        { risque: 'Sous-estimation de charge', impact: 'Majeur', mesure: 'Réallocation ressources / priorisation' },
+        { risque: 'Retards approbations budgétaires', impact: 'Critique', mesure: 'Plan B budgétaire et phasage' }
+      ];
+      document.querySelector('#table-risques tbody').innerHTML = '';
+      demo.forEach(addRiskRow);
+      autoSaveThrottle();
+      toast('Risques de démonstration ajoutés');
     }
 
-    /* LocalStorage */
-    const LS_KEY='cfed_fiche_projet_v1'; let _autosaveTimer=null;
-    const g=id=>document.getElementById(id);
-    const val=id=>g(id)?.value||'';
-    function autoSaveThrottle(){ if(_autosaveTimer) clearTimeout(_autosaveTimer); _autosaveTimer=setTimeout(sauvegarderDonnees,400); }
-    function collectFormData(){
-      const data={projet:val('projet'),responsable:val('responsable'),dateDebut:val('dateDebut'),dateFin:val('dateFin'),priorite:val('priorite'),
-        descriptif:val('descriptif'),objectif:val('objectif'),prochaine:val('prochaine'),commentaires:val('commentaires'),activites:[],risques:[]};
-      document.querySelectorAll('#table-activites tbody tr').forEach(tr=>data.activites.push({activite:tr.querySelector('.activite-input')?.value||'',statut:tr.querySelector('.statut-select')?.value||'',avancement:tr.querySelector('.avancement-input')?.value||'',comment:tr.querySelector('.comment-input')?.value||''}));
-      document.querySelectorAll('#table-risques tbody tr').forEach(tr=>data.risques.push({risque:tr.querySelector('.risque-input')?.value||'',impact:tr.querySelector('.impact-select')?.value||'',mesure:tr.querySelector('.mesure-input')?.value||''}));
+    // ===== CALCUL DES KPI =====
+    function computeKPIs() {
+      const rows = [...document.querySelectorAll('#table-activites tbody tr')];
+      if (!rows.length) return;
+      
+      let sum = 0, count = 0, done = 0, prog = 0;
+      rows.forEach(tr => {
+        const statut = tr.querySelector('.statut-select')?.value || '';
+        const av = Number(tr.querySelector('.avancement-input')?.value || 0);
+        if (!isNaN(av)) {
+          sum += av;
+          count++;
+        }
+        if (statut === 'Terminé') done++;
+        if (statut === 'En cours') prog++;
+      });
+      
+      const avg = count ? (sum / count) : 0;
+      g('kpiAvg').textContent = isNaN(avg) ? '—' : `${Math.round(avg)}%`;
+      g('kpiInProgress').textContent = String(prog);
+      g('kpiDone').textContent = String(done);
+      g('kpiTotal').textContent = String(rows.length);
+    }
+
+    // ===== GESTION DU STOCKAGE LOCAL =====
+    const LS_KEY = 'cfed_fiche_projet_v1';
+    let _autosaveTimer = null;
+
+    function autoSaveThrottle() {
+      if (_autosaveTimer) clearTimeout(_autosaveTimer);
+      _autosaveTimer = setTimeout(sauvegarderDonnees, 400);
+    }
+
+    function collectFormData() {
+      const data = {
+        projet: val('projet'),
+        responsable: val('responsable'),
+        dateDebut: val('dateDebut'),
+        dateFin: val('dateFin'),
+        priorite: val('priorite'),
+        descriptif: val('descriptif'),
+        objectif: val('objectif'),
+        prochaine: val('prochaine'),
+        commentaires: val('commentaires'),
+        activites: [],
+        risques: []
+      };
+      
+      document.querySelectorAll('#table-activites tbody tr').forEach(tr => 
+        data.activites.push({
+          activite: tr.querySelector('.activite-input')?.value || '',
+          statut: tr.querySelector('.statut-select')?.value || '',
+          avancement: tr.querySelector('.avancement-input')?.value || '',
+          comment: tr.querySelector('.comment-input')?.value || ''
+        })
+      );
+      
+      document.querySelectorAll('#table-risques tbody tr').forEach(tr => 
+        data.risques.push({
+          risque: tr.querySelector('.risque-input')?.value || '',
+          impact: tr.querySelector('.impact-select')?.value || '',
+          mesure: tr.querySelector('.mesure-input')?.value || ''
+        })
+      );
+      
       return data;
     }
-    function sauvegarderDonnees(){ localStorage.setItem(LS_KEY, JSON.stringify(collectFormData())); toast('Projet sauvegardé'); }
-    function chargerDonnees(){
-      const s=localStorage.getItem(LS_KEY); if(!s) return;
-      try{ const d=JSON.parse(s);
-        ['projet','responsable','dateDebut','dateFin','priorite','descriptif','objectif','prochaine','commentaires'].forEach(k=>{const el=g(k); if(el) el.value=d[k]||''});
-        if(Array.isArray(d.activites)&&d.activites.length){document.querySelector('#table-activites tbody').innerHTML=''; d.activites.forEach(addActivityRow);}
-        if(Array.isArray(d.risques)&&d.risques.length){document.querySelector('#table-risques tbody').innerHTML=''; d.risques.forEach(addRiskRow);}
-        computeKPIs(); toast('Données chargées');
-      }catch(e){console.warn('Erreur chargement :',e)}
-    }
-    function effacerFormulaire(){ if(!confirm('Effacer toutes les données ?')) return;
-      localStorage.removeItem(LS_KEY); g('ficheProjet').reset();
-      document.querySelector('#table-activites tbody').innerHTML=''; addActivityRow();
-      document.querySelector('#table-risques tbody').innerHTML=''; addRiskRow();
-      computeKPIs(); toast('Formulaire réinitialisé');
+
+    function sauvegarderDonnees() {
+      localStorage.setItem(LS_KEY, JSON.stringify(collectFormData()));
+      toast('Projet sauvegardé');
     }
 
-    /* Validation */
-    function validateRequiredFields(){
-      const ids=['projet','descriptif','objectif'], missing=[];
-      ids.forEach(id=>{const el=g(id); if(!el.value || !String(el.value).trim()){missing.push(el.previousElementSibling?.textContent?.replace('*','').trim()||id)}});
-      const banner=g('validationBanner'), span=g('validationMissing');
-      if(missing.length){banner.style.display='block'; span.textContent=missing.join(', ')} else {banner.style.display='none'; span.textContent=''}
-      return missing.length===0;
+    function chargerDonnees() {
+      const s = localStorage.getItem(LS_KEY);
+      if (!s) return;
+      
+      try {
+        const d = JSON.parse(s);
+        ['projet', 'responsable', 'dateDebut', 'dateFin', 'priorite', 'descriptif', 'objectif', 'prochaine', 'commentaires'].forEach(k => {
+          const el = g(k);
+          if (el) el.value = d[k] || '';
+        });
+        
+        if (Array.isArray(d.activites) && d.activites.length) {
+          document.querySelector('#table-activites tbody').innerHTML = '';
+          d.activites.forEach(addActivityRow);
+        }
+        
+        if (Array.isArray(d.risques) && d.risques.length) {
+          document.querySelector('#table-risques tbody').innerHTML = '';
+          d.risques.forEach(addRiskRow);
+        }
+        
+        computeKPIs();
+        toast('Données chargées');
+      } catch (e) {
+        console.warn('Erreur chargement :', e);
+      }
     }
 
-    /* Export PDF */
-    function escapeHtml(s){ if(s==null) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;'); }
+    function effacerFormulaire() {
+      if (!confirm('Effacer toutes les données ?')) return;
+      
+      localStorage.removeItem(LS_KEY);
+      g('ficheProjet').reset();
+      document.querySelector('#table-activites tbody').innerHTML = '';
+      addActivityRow();
+      document.querySelector('#table-risques tbody').innerHTML = '';
+      addRiskRow();
+      computeKPIs();
+      toast('Formulaire réinitialisé');
+    }
 
-    async function exporterPDF(){
-      if(!validateRequiredFields()){ toast('Veuillez renseigner les champs requis',true,3000); return; }
-      const nomProjet=val('projet')||'Sans titre', pdfName=`Fiche Projet - ${nomProjet}.pdf`;
+    // ===== VALIDATION =====
+    function validateRequiredFields() {
+      const ids = ['projet', 'descriptif', 'objectif'];
+      const missing = [];
+      
+      ids.forEach(id => {
+        const el = g(id);
+        if (!el.value || !String(el.value).trim()) {
+          missing.push(el.previousElementSibling?.textContent?.replace('*', '').trim() || id);
+        }
+      });
+      
+      const banner = g('validationBanner');
+      const span = g('validationMissing');
+      if (missing.length) {
+        banner.style.display = 'block';
+        span.textContent = missing.join(', ');
+      } else {
+        banner.style.display = 'none';
+        span.textContent = '';
+      }
+      
+      return missing.length === 0;
+    }
 
-      const src=g('form-container');
-      const clone=src.cloneNode(true);
+    // ===== FONCTIONS UTILITAIRES =====
+    function escapeHtml(s) {
+      if (s == null) return '';
+      return String(s)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
 
-      // Retirer la toolbar du clone
-      clone.querySelectorAll('.no-print, .toolbar').forEach(el=>el.remove());
+    // ===== EXPORT PDF =====
+    async function exporterPDF() {
+      if (!validateRequiredFields()) {
+        toast('Veuillez renseigner les champs requis', true, 3000);
+        return;
+      }
+      
+      const nomProjet = val('projet') || 'Sans titre';
+      const pdfName = `Fiche Projet - ${nomProjet}.pdf`;
 
-      // Remplacer inputs/select/textarea par du texte justifié multi-ligne
-      clone.querySelectorAll('input, select, textarea').forEach(el=>{
-        const block=document.createElement(el.tagName==='TEXTAREA'?'div':'span');
-        block.className='print-field'+(el.tagName==='TEXTAREA'?' multiline':'');
-        let val=''; if(el.tagName==='SELECT'){ val=(el.selectedOptions&&el.selectedOptions[0])?el.selectedOptions[0].text:(el.value||''); } else { val=el.value||''; }
-        block.textContent=val;
-        const wrapper=el.closest('.field')||el.parentElement; if(wrapper) wrapper.classList.add('avoid-break');
+      const src = g('form-container');
+      const clone = src.cloneNode(true);
+
+      /* 1) Retirer toolbars et boutons de contrôle (toutes sections) */
+      clone.querySelectorAll('.no-print, .toolbar').forEach(el => el.remove());
+
+      /* 2) Retirer les champs marqués comme "pdf-hide" (Priorité) */
+      clone.querySelectorAll('.pdf-hide').forEach(el => el.remove());
+
+      /* 3) Retirer toutes les colonnes "Actions" (icônes poubelle) de chaque tableau */
+      clone.querySelectorAll('th.actions-col').forEach(th => {
+        const table = th.closest('table');
+        const idx = [...th.parentNode.children].indexOf(th);
+        // Supprimer l'en-tête
+        th.remove();
+        // Supprimer la cellule correspondante dans chaque ligne du tbody
+        table.querySelectorAll('tbody tr').forEach(tr => {
+          const cell = tr.children[idx];
+          if (cell) cell.remove();
+        });
+      });
+
+      /* 4) Remplacer inputs/select/textarea par texte justifié multi-ligne pour le PDF
+      (on lit la valeur depuis le DOM source pour éviter la perte d'état dans le clone) */
+      function readDisplayValueFromSource(elInClone) {
+        const srcEl = elInClone.id ? document.getElementById(elInClone.id) : null;
+        const ref = srcEl || elInClone; // fallback si pas d'id
+        if (ref.tagName === 'SELECT') {
+          const idx = ref.selectedIndex;
+          if (idx >= 0) {
+            const opt = ref.options[idx];
+            return (opt && (opt.text || opt.label)) ? (opt.text || opt.label) : (ref.value || '');
+          }
+          return ref.value || '';
+        }
+        return ref.value || '';
+      }
+
+      clone.querySelectorAll('input, select, textarea').forEach(el => {
+        const block = document.createElement(el.tagName === 'TEXTAREA' ? 'div' : 'span');
+        block.className = 'print-field' + (el.tagName === 'TEXTAREA' ? ' multiline' : '');
+        const v = (readDisplayValueFromSource(el) || '').trim();
+        block.textContent = v || '—';
+        const wrapper = el.closest('.field') || el.parentElement;
+        if (wrapper) wrapper.classList.add('avoid-break');
         el.replaceWith(block);
       });
 
-      clone.style.maxWidth='794px'; clone.style.width='794px'; clone.style.margin='0 auto'; clone.style.boxShadow='none'; clone.style.borderRadius='0';
+      /* 5) Mise au format A4 propre pour html2pdf */
+      clone.style.maxWidth = '794px'; /* ~A4 @96dpi */
+      clone.style.width = '794px';
+      clone.style.margin = '0 auto';
+      clone.style.boxShadow = 'none';
+      clone.style.borderRadius = '0';
 
-      const holder=g('pdf-container'); holder.innerHTML=''; holder.appendChild(clone);
-      holder.style.position='fixed'; holder.style.left='-10000px'; holder.style.top='0';
+      const holder = g('pdf-container');
+      holder.innerHTML = '';
+      holder.appendChild(clone);
+      holder.style.position = 'fixed';
+      holder.style.left = '-10000px';
+      holder.style.top = '0';
 
-      const opt={
-        margin:[0,0,0,0],
-        filename:pdfName,
-        image:{type:'jpeg',quality:0.98},
-        html2canvas:{scale:2,useCORS:true,logging:false,scrollY:0,backgroundColor:'#ffffff'},
-        jsPDF:{unit:'pt',format:'a4',orientation:'portrait'},
-        pagebreak:{mode:['css','legacy'],avoid:['.avoid-break']}
+      const opt = {
+        margin: [0, 0, 0, 0],
+        filename: pdfName,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false, scrollY: 0, backgroundColor: '#ffffff' },
+        jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['css'], avoid: ['.avoid-break'] }
       };
 
       toast(`Génération du PDF « ${pdfName} »…`);
 
-      try{
-        const worker=html2pdf().set(opt).from(clone).toPdf();
-        await worker.get('pdf').then(pdf=>{
-          const total=pdf.internal.getNumberOfPages();
-          const pageW=pdf.internal.pageSize.getWidth(), pageH=pdf.internal.pageSize.getHeight();
-          for(let i=1;i<=total;i++){
+      try {
+        const worker = html2pdf().set(opt).from(clone).toPdf();
+        await worker.get('pdf').then(pdf => {
+          const total = pdf.internal.getNumberOfPages();
+          const pageW = pdf.internal.pageSize.getWidth();
+          const pageH = pdf.internal.pageSize.getHeight();
+          for (let i = 1; i <= total; i++) {
             pdf.setPage(i);
-            if(i>=2){ pdf.setDrawColor(210); pdf.setLineWidth(0.3); pdf.line(36,36,pageW-36,36); }
-            pdf.setFont('helvetica','normal'); pdf.setFontSize(10); pdf.setTextColor(120);
-            pdf.text(`Page ${i} / ${total}`, pageW/2, pageH-14, {align:'center'});
+            if (i >= 2) {
+              pdf.setDrawColor(210);
+              pdf.setLineWidth(0.3);
+              pdf.line(36, 36, pageW - 36, 36);
+            }
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(10);
+            pdf.setTextColor(120);
+            pdf.text(`Page ${i} / ${total}`, pageW / 2, pageH - 14, { align: 'center' });
           }
           pdf.save(pdfName);
         });
         toast(`✅ PDF « ${pdfName} » téléchargé`);
-      }catch(err){
-        console.error('Erreur génération PDF :',err); toast('Erreur lors de la génération du PDF',true,4500);
-      }finally{
-        holder.innerHTML='';
+      } catch (err) {
+        console.error('Erreur génération PDF :', err);
+        toast('Erreur lors de la génération du PDF', true, 4500);
+      } finally {
+        holder.innerHTML = '';
       }
     }
 
-    /* Init */
-    function init(){
-      if(document.querySelectorAll('#table-activites tbody tr').length===0) addActivityRow();
-      if(document.querySelectorAll('#table-risques tbody tr').length===0) addRiskRow();
+    // ===== INITIALISATION =====
+    function init() {
+      if (document.querySelectorAll('#table-activites tbody tr').length === 0) addActivityRow();
+      if (document.querySelectorAll('#table-risques tbody tr').length === 0) addRiskRow();
       chargerDonnees();
-      document.querySelectorAll('#ficheProjet input, #ficheProjet textarea, #ficheProjet select').forEach(el=>{
-        el.addEventListener('change',autoSaveThrottle); el.addEventListener('input',autoSaveThrottle);
+      
+      document.querySelectorAll('#ficheProjet input, #ficheProjet textarea, #ficheProjet select').forEach(el => {
+        el.addEventListener('change', autoSaveThrottle);
+        el.addEventListener('input', autoSaveThrottle);
       });
+      
       document.querySelectorAll('.avancement-input').forEach(updateProgressBar);
       computeKPIs();
     }
+
     document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
