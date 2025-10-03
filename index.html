@@ -9,6 +9,8 @@
   <!-- Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
 
   <!-- html2pdf (inclut jsPDF + html2canvas) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -174,6 +176,7 @@
 
     /* === BARRE DE TITRE === */
     .title-bar {
+      font-family: 'Montserrat', sans-serif;
       background: var(--gray);
       color: var(--secondary);
       padding: 16px;
@@ -307,7 +310,7 @@
       border-radius: 8px;
       font-weight: 600;
       font-size: 14px;
-      transition: transform .12s, box-shadow .12s, background .2s;
+      transition: transform .12s, box-shadow .12s, 'background' .2s;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -699,11 +702,17 @@
       </section>
 
       <!-- BARRE D'OUTILS PRINCIPALE -->
-      <div class="toolbar no-print" aria-label="Commandes">
-        <button type="button" class="btn btn-ghost" onclick="sauvegarderDonnees()"><i class="fa-solid fa-save"></i> Sauvegarder</button>
-        <button type="button" class="btn btn-ghost" onclick="effacerFormulaire()"><i class="fa-solid fa-trash-can"></i> Effacer</button>
-        <button type="button" class="btn btn-success" onclick="exporterPDF()"><i class="fa-solid fa-file-pdf"></i> Exporter en PDF</button>
-      </div>
+      <div class="toolbar no-print" aria-label="Commandes"> 
+      <!-- Jaune -->
+      <button type="button" class="btn btn-warning" onclick="sauvegarderDonnees()"> <i class="fa-solid fa-save"></i> Sauvegarder </button>
+
+      <!-- Rouge -->
+      <button type="button" class="btn btn-danger" onclick="effacerFormulaire()"> <i class="fa-solid fa-trash-can"></i> Effacer </button>
+
+      <!-- Vert -->
+      <button type="button" class="btn btn-primary" onclick="exporterPDF()"> <i class="fa-solid fa-file-pdf"></i> Exporter en PDF </button>
+    </div>
+
     </form>
   </div>
 
